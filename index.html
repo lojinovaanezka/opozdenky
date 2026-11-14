@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podpora řešení případů – Krok 2</title>
+    <title>Podpora řešení případů – Krok 3</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -49,6 +49,24 @@
         input.small-input {
             width: 75px;
         }
+        .btn-add {
+            margin-top: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
+            background-color: #f0f4f8;
+            color: #0056b3;
+            border: 1px solid #0056b3;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-add:hover:not(:disabled) {
+            background-color: #dce8f5;
+        }
+        .btn-add:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .copy-box {
             display: inline-block;
             background: #eef5ff;
@@ -92,11 +110,14 @@
     <div class="sekce">
         <h2>AB administrace</h2>
         <div class="radek">Přehodit stav na “storno”</div>
-        <div class="radek">
-            Kód produktu <input type="text" id="pole-K1" placeholder="pole K1">
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            Počet produktů <input type="text" id="pole-P1" class="small-input" placeholder="pole P1">
+        <div id="produkty-kontejner">
+            <div class="radek">
+                Kód produktu <input type="text" id="pole-K1" placeholder="pole K1">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Počet produktů <input type="text" id="pole-P1" class="small-input" placeholder="pole P1">
+            </div>
         </div>
+        <button type="button" id="btn-pridat-produkt" class="btn-add">+ Přidat produkt</button>
         <div class="radek">Proklik přes číslo balíku na ship</div>
     </div>
 
@@ -209,7 +230,7 @@ Bohužel se nám nepodařilo objednávku doručit kompletně.
 Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ pole R, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
 Reklamační případ naleznete v:
 Moje Alza > Reklamace
-Novou objednávku na chybějící zboží č. pole Z2naleznete ve své registraci a aktuálně se zpracovává. 
+Novou objednávku na chybějící zboží č. pole Z2 naleznete ve své registraci a aktuálně se zpracovává. 
 Předpokládaný termín doručení je pole D
 Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
@@ -262,6 +283,31 @@ Přejeme Vám hezký den.</div>
                 const text = box.getAttribute('data-copy') || box.innerText;
                 zkopirujDoSchranky(text, box);
             });
+        });
+
+        // Přidávání řádků produktů (až K20 a P20)
+        const maxProduktu = 20;
+        let aktualniPocetProduktu = 1;
+        const kontejnerProduktu = document.getElementById('produkty-kontejner');
+        const btnPridatProdukt = document.getElementById('btn-pridat-produkt');
+
+        btnPridatProdukt.addEventListener('click', () => {
+            if (aktualniPocetProduktu >= maxProduktu) return;
+
+            aktualniPocetProduktu++;
+            const novyRadek = document.createElement('div');
+            novyRadek.className = 'radek';
+            novyRadek.innerHTML = `
+                Kód produktu <input type="text" id="pole-K${aktualniPocetProduktu}" placeholder="pole K${aktualniPocetProduktu}">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Počet produktů <input type="text" id="pole-P${aktualniPocetProduktu}" class="small-input" placeholder="pole P${aktualniPocetProduktu}">
+            `;
+            kontejnerProduktu.appendChild(novyRadek);
+
+            if (aktualniPocetProduktu >= maxProduktu) {
+                btnPridatProdukt.disabled = true;
+                btnPridatProdukt.textContent = 'Dosažen limit 20 produktů';
+            }
         });
     </script>
 
