@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podpora řešení případů – Krok 3</title>
+    <title>Podpora řešení případů – Krok 4</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -21,12 +21,37 @@
             padding: 16px 20px;
             margin-bottom: 14px;
         }
-        h2 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-            color: #0056b3;
+        .sekce-zahlavi {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: 1px solid #eee;
             padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #0056b3;
+        }
+        .btn-hotovo {
+            padding: 4px 11px;
+            font-size: 13px;
+            border-radius: 4px;
+            border: 1px solid #0056b3;
+            background-color: #ffffff;
+            color: #0056b3;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .btn-hotovo:hover {
+            background-color: #eef5ff;
+        }
+        .btn-hotovo.hotovo-aktivni {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: #ffffff;
         }
         .radek {
             margin: 8px 0;
@@ -100,7 +125,10 @@
 <body>
 
     <div class="sekce">
-        <h2>Faktura</h2>
+        <div class="sekce-zahlavi">
+            <h2>Faktura</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Číslo faktury <input type="text" id="pole-F" placeholder="pole F">
         </div>
@@ -108,7 +136,10 @@
     </div>
 
     <div class="sekce">
-        <h2>AB administrace</h2>
+        <div class="sekce-zahlavi">
+            <h2>AB administrace</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">Přehodit stav na “storno”</div>
         <div id="produkty-kontejner">
             <div class="radek">
@@ -122,7 +153,10 @@
     </div>
 
     <div class="sekce">
-        <h2>Ship</h2>
+        <div class="sekce-zahlavi">
+            <h2>Ship</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">Přehodit stav na “rozbaleno”</div>
         <div class="radek">
             Interní skladová poznámka 
@@ -133,23 +167,32 @@
     </div>
 
     <div class="sekce">
-        <h2>Faktura</h2>
+        <div class="sekce-zahlavi">
+            <h2>Faktura</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">Nový CCT</div>
     </div>
 
     <div class="sekce">
-        <h2>CCT</h2>
+        <div class="sekce-zahlavi">
+            <h2>CCT</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Číslo CCT <input type="text" id="pole-C" placeholder="pole C">
         </div>
     </div>
 
     <div class="sekce">
-        <h2>Faktura</h2>
+        <div class="sekce-zahlavi">
+            <h2>Faktura</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">ctrl + shift + A</div>
         <div class="radek">
             Opožděné - filtr - 
-            <span class="copy-box" data-copy="C">C</span> - 
+            <span class="copy-box" data-propis="C" data-default="C">C</span> - 
             <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> - 
             vybrat produkty
         </div>
@@ -159,7 +202,10 @@
     </div>
 
     <div class="sekce">
-        <h2>Zakázka</h2>
+        <div class="sekce-zahlavi">
+            <h2>Zakázka</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Zkopírovat číslo zakázky <input type="text" id="pole-Z1" placeholder="pole Z1">
         </div>
@@ -167,7 +213,10 @@
     </div>
 
     <div class="sekce">
-        <h2>Duplicitní objednávka</h2>
+        <div class="sekce-zahlavi">
+            <h2>Duplicitní objednávka</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Zkopírovat číslo zakázky <input type="text" id="pole-Z2" placeholder="pole Z2">
         </div>
@@ -180,8 +229,8 @@
         <div class="radek">
             <strong>Kompenzace</strong><br>
             ASKU makro… - 
-            <span class="copy-box" data-copy="pole C">pole C</span> - 
-            <span class="copy-box" data-copy="pole K">pole K</span>
+            <span class="copy-box" data-propis="C" data-default="pole C">pole C</span> - 
+            <span class="copy-box" data-propis="K" data-default="pole K">pole K</span>
         </div>
         <div class="radek"><strong>Duplicitní zakázka</strong></div>
         <div class="radek">ctrl + alt + D</div>
@@ -191,7 +240,10 @@
     </div>
 
     <div class="sekce">
-        <h2>Nová faktura</h2>
+        <div class="sekce-zahlavi">
+            <h2>Nová faktura</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Zkopírovat čas doručení <input type="text" id="pole-D" placeholder="pole D">
         </div>
@@ -200,7 +252,10 @@
     </div>
 
     <div class="sekce">
-        <h2>Stará faktura</h2>
+        <div class="sekce-zahlavi">
+            <h2>Stará faktura</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Komentář 
             <span class="copy-box" data-copy="-CVVYD-">-CVVYD-</span>
@@ -210,10 +265,13 @@
     </div>
 
     <div class="sekce">
-        <h2>Zadání reklamace</h2>
+        <div class="sekce-zahlavi">
+            <h2>Zadání reklamace</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">
             Zadat číslo faktury 
-            <span class="copy-box" data-copy="pole F">pole F</span>
+            <span class="copy-box" data-propis="F" data-default="pole F">pole F</span>
         </div>
         <div class="radek">
             Zkopírovat číslo reklamace <input type="text" id="pole-R" placeholder="pole R">
@@ -222,22 +280,58 @@
     </div>
 
     <div class="sekce">
-        <h2>CCT</h2>
+        <div class="sekce-zahlavi">
+            <h2>CCT</h2>
+            <button type="button" class="btn-hotovo">Hotovo</button>
+        </div>
         <div class="radek">Vložit:</div>
-        <div class="copy-box copy-block" id="zaverecny-blok">Dobrý den, 
-omlouváme se za komplikace spojené s doručením Vaší objednávky č. pole Z1. 
-Bohužel se nám nepodařilo objednávku doručit kompletně. 
-Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ pole R, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
-Reklamační případ naleznete v:
-Moje Alza > Reklamace
-Novou objednávku na chybějící zboží č. pole Z2 naleznete ve své registraci a aktuálně se zpracovává. 
-Předpokládaný termín doručení je pole D
-Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
-Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
-Přejeme Vám hezký den.</div>
+        <div class="copy-box copy-block" id="zaverecny-blok"></div>
     </div>
 
     <script>
+        function ziskejHodnotu(idPole, vychoziText) {
+            const el = document.getElementById(idPole);
+            if (!el) return vychoziText;
+            const hodnota = el.value.trim();
+            return hodnota !== '' ? hodnota : vychoziText;
+        }
+
+        function aktualizujVsechnyPropsani() {
+            const valF = ziskejHodnotu('pole-F', 'pole F');
+            const valC = ziskejHodnotu('pole-C', 'C');
+            const valCkomp = ziskejHodnotu('pole-C', 'pole C');
+            const valZ1 = ziskejHodnotu('pole-Z1', 'pole Z1');
+            const valZ2 = ziskejHodnotu('pole-Z2', 'pole Z2');
+            const valK = ziskejHodnotu('pole-K', 'pole K');
+            const valD = ziskejHodnotu('pole-D', 'pole D');
+            const valR = ziskejHodnotu('pole-R', 'pole R');
+
+            document.querySelectorAll('.copy-box[data-propis]').forEach(box => {
+                const klic = box.getAttribute('data-propis');
+                let novyText = box.getAttribute('data-default') || '';
+                if (klic === 'F') novyText = valF;
+                if (klic === 'C') {
+                    novyText = box.getAttribute('data-default') === 'C' ? valC : valCkomp;
+                }
+                if (klic === 'K') novyText = valK;
+                box.textContent = novyText;
+            });
+
+            const zaverecnyBlok = document.getElementById('zaverecny-blok');
+            zaverecnyBlok.textContent =
+`Dobrý den, 
+omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
+Bohužel se nám nepodařilo objednávku doručit kompletně. 
+Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ ${valR}, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
+Reklamační případ naleznete v:
+Moje Alza > Reklamace
+Novou objednávku na chybějící zboží č. ${valZ2} naleznete ve své registraci a aktuálně se zpracovává. 
+Předpokládaný termín doručení je ${valD}
+Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
+Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
+Přejeme Vám hezký den.`;
+        }
+
         function zkopirujDoSchranky(text, prvek) {
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -280,8 +374,18 @@ Přejeme Vám hezký den.</div>
 
         document.querySelectorAll('.copy-box').forEach(box => {
             box.addEventListener('click', () => {
-                const text = box.getAttribute('data-copy') || box.innerText;
+                const text = box.hasAttribute('data-copy')
+                    ? box.getAttribute('data-copy')
+                    : box.innerText;
                 zkopirujDoSchranky(text, box);
+            });
+        });
+
+        document.querySelectorAll('.btn-hotovo').forEach(btn => {
+            btn.addEventListener('click', () => {
+                aktualizujVsechnyPropsani();
+                btn.classList.add('hotovo-aktivni');
+                btn.textContent = 'Hotovo ✓';
             });
         });
 
@@ -309,6 +413,9 @@ Přejeme Vám hezký den.</div>
                 btnPridatProdukt.textContent = 'Dosažen limit 20 produktů';
             }
         });
+
+        // Inicializace výchozího textu při načtení
+        aktualizujVsechnyPropsani();
     </script>
 
 </body>
