@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podpora řešení případů</title>
+    <title>Podpora řešení případů – Krok 1</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -28,44 +28,8 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 6px;
         }
-        p, .radek {
+        .radek {
             margin: 8px 0;
-        }
-        input[type="text"] {
-            padding: 5px 8px;
-            font-size: 15px;
-            border: 1px solid #999;
-            border-radius: 4px;
-            width: 170px;
-            background: #fffdf5;
-        }
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #0056b3;
-            background: #ffffff;
-        }
-        .produkt-radek {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 8px;
-            padding: 6px 8px;
-            background: #f9f9fb;
-            border-radius: 4px;
-        }
-        .btn {
-            padding: 6px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid #0056b3;
-            background: #eef5ff;
-            color: #0056b3;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-        .btn:hover {
-            background: #dceaff;
         }
         .copy-box {
             display: inline-block;
@@ -77,7 +41,6 @@
             font-family: monospace;
             font-size: 14px;
             cursor: pointer;
-            user-select: all;
             transition: background 0.15s;
         }
         .copy-box:hover {
@@ -96,363 +59,174 @@
             margin-top: 6px;
             line-height: 1.5;
         }
-        .propis {
-            font-weight: bold;
-            color: #0056b3;
-        }
-        table.souhrn-tabulka {
-            width: 100%;
-            max-width: 450px;
-            border-collapse: collapse;
-            margin: 6px 0 10px 0;
-            font-size: 14px;
-        }
-        table.souhrn-tabulka th, table.souhrn-tabulka td {
-            border: 1px solid #ccc;
-            padding: 5px 10px;
-            text-align: left;
-        }
-        table.souhrn-tabulka th {
-            background: #f0f2f5;
-        }
-        .kompenzace-blok {
-            display: none;
-            margin: 10px 0;
-            padding: 10px 14px;
-            background: #fff8e6;
-            border-left: 3px solid #f0ad4e;
-            border-radius: 4px;
-        }
-        .radio-skupina label {
-            margin-right: 15px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .reset-sekce {
-            text-align: center;
-            margin-top: 25px;
-        }
-        .btn-reset {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .btn-reset:hover {
-            background: #b02a37;
-        }
     </style>
 </head>
 <body>
 
-    <!-- 1. FAKTURA -->
     <div class="sekce">
         <h2>Faktura</h2>
-        <div class="radek">
-            Číslo faktury <input type="text" id="pole-F" placeholder="F">
-        </div>
+        <div class="radek">Číslo faktury [pole F]</div>
         <div class="radek">Přejít na AB administrace</div>
     </div>
 
-    <!-- 2. AB ADMINISTRACE -->
     <div class="sekce">
         <h2>AB administrace</h2>
         <div class="radek">Přehodit stav na “storno”</div>
-        
-        <div id="produkty-kontejner"></div>
-        
+        <div class="radek">Kód produktu [pole K1] &nbsp;&nbsp;&nbsp;&nbsp; Počet produktů [pole P1]</div>
         <div class="radek">Proklik přes číslo balíku na ship</div>
     </div>
 
-    <!-- 3. SHIP -->
     <div class="sekce">
         <h2>Ship</h2>
         <div class="radek">Přehodit stav na “rozbaleno”</div>
         <div class="radek">
             Interní skladová poznámka 
-            <span class="copy-box" data-copy="systémově stornováno CC" title="Klikni pro zkopírování">systémově stornováno CC</span>
+            <span class="copy-box" data-copy="systémově stornováno CC">systémově stornováno CC</span>
         </div>
         <div class="radek">Zavřít ship</div>
         <div class="radek">Zavřít AB administraci</div>
     </div>
 
-    <!-- 4. FAKTURA -->
     <div class="sekce">
         <h2>Faktura</h2>
         <div class="radek">Nový CCT</div>
     </div>
 
-    <!-- 5. CCT -->
     <div class="sekce">
         <h2>CCT</h2>
-        <div class="radek">
-            Číslo CCT <input type="text" id="pole-C" placeholder="C">
-        </div>
+        <div class="radek">Číslo CCT [pole C]</div>
     </div>
 
-    <!-- 6. FAKTURA -->
     <div class="sekce">
         <h2>Faktura</h2>
         <div class="radek">ctrl + shift + A</div>
         <div class="radek">
             Opožděné - filtr - 
-            <span class="copy-box" id="copy-C-filtr" title="Klikni pro zkopírování">[C]</span> - 
-            <span class="copy-box" data-copy="nedorazilo" title="Klikni pro zkopírování">nedorazilo</span> - 
+            <span class="copy-box" data-copy="C">C</span> - 
+            <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> - 
             vybrat produkty
         </div>
-        <div class="radek">
-            <strong>Produkty:</strong>
-            <div id="produkty-kopie-vystup"></div>
-        </div>
+        <div class="radek">Produkty: [tabulka produktů]</div>
         <div class="radek">Zpracovat</div>
         <div class="radek">Přejít na objednávku</div>
     </div>
 
-    <!-- 7. OBJEDNÁVKA -->
     <div class="sekce">
         <h2>Objednávka</h2>
-        <div class="radek">
-            Zkopírovat číslo objednávky <input type="text" id="pole-Z1" placeholder="Z1">
-        </div>
+        <div class="radek">Zkopírovat číslo objednávky [pole Z1]</div>
         <div class="radek">Vytvořit duplicitní objednávku</div>
     </div>
 
-    <!-- 8. DUPLICITNÍ OBJEDNÁVKA -->
     <div class="sekce">
         <h2>Duplicitní objednávka</h2>
-        <div class="radek">
-            Zkopírovat číslo objednávky <input type="text" id="pole-Z2" placeholder="Z2">
-        </div>
+        <div class="radek">Zkopírovat číslo objednávky [pole Z2]</div>
         <div class="radek">Odstranit vše kromě dopravy a produktů</div>
-        
-        <div class="radek radio-skupina">
-            Třeba kompenzovat? 
-            <label><input type="radio" name="kompenzace" value="ano"> Ano</label>
-            <label><input type="radio" name="kompenzace" value="ne" checked> Ne</label>
+        <div class="radek">Třeba kompenzovat? Ano / Ne</div>
+        <div class="radek">Na kolik Kč? [pole K]</div>
+        <div class="radek">Vytvořit novou kompenzaci</div>
+        <div class="radek">
+            <strong>Kompenzace</strong><br>
+            ASKU makro… - 
+            <span class="copy-box" data-copy="pole C">pole C</span> - 
+            <span class="copy-box" data-copy="pole K">pole K</span>
         </div>
-
-        <div id="kompenzace-sekce" class="kompenzace-blok">
-            <div class="radek">
-                Na kolik Kč? <input type="text" id="pole-K" placeholder="K">
-            </div>
-            <div class="radek">Vytvořit novou kompenzaci</div>
-            <div class="radek" style="margin-top: 10px;">
-                <strong>Kompenzace</strong><br>
-                ASKU makro… - 
-                <span class="copy-box" id="copy-C-komp" title="Klikni pro zkopírování">[C]</span> - 
-                <span class="copy-box" id="copy-K-komp" title="Klikni pro zkopírování">[K]</span>
-            </div>
-        </div>
-
         <div class="radek">ctrl + alt + D</div>
         <div class="radek">ctrl + F11</div>
         <div class="radek">F12</div>
         <div class="radek">Přejít na novou fakturu</div>
     </div>
 
-    <!-- 9. NOVÁ FAKTURA -->
     <div class="sekce">
         <h2>Nová faktura</h2>
-        <div class="radek">
-            Zkopírovat čas doručení <input type="text" id="pole-D" placeholder="D">
-        </div>
+        <div class="radek">Zkopírovat čas doručení [pole D]</div>
         <div class="radek">Přejít na starou fakturu</div>
         <div class="radek">Pozavírat vše kromě CCT a staré faktury</div>
     </div>
 
-    <!-- 10. STARÁ FAKTURA -->
     <div class="sekce">
         <h2>Stará faktura</h2>
         <div class="radek">
             Komentář 
-            <span class="copy-box" data-copy="-CVVYD-" title="Klikni pro zkopírování">-CVVYD-</span>
+            <span class="copy-box" data-copy="-CVVYD-">-CVVYD-</span>
         </div>
         <div class="radek">Vydat doklad</div>
         <div class="radek">Přejít na zadání reklamace</div>
     </div>
 
-    <!-- 11. ZADÁNÍ REKLAMACE -->
     <div class="sekce">
         <h2>Zadání reklamace</h2>
         <div class="radek">
             Zadat číslo faktury 
-            <span class="copy-box" id="copy-F-rekl" title="Klikni pro zkopírování">[F]</span>
+            <span class="copy-box" data-copy="pole F">pole F</span>
         </div>
-        <div class="radek">
-            Zkopírovat číslo reklamace <input type="text" id="pole-R" placeholder="R">
-        </div>
+        <div class="radek">Zkopírovat číslo reklamace [pole R]</div>
         <div class="radek">Přejít na CCT</div>
     </div>
 
-    <!-- 12. CCT (ZÁVĚREČNÝ TEXT) -->
     <div class="sekce">
         <h2>CCT</h2>
-        <div class="radek">Vložit (kliknutím na rámeček zkopíruješ celý text):</div>
-        <div class="copy-box copy-block" id="copy-zaverecny-text" title="Klikni pro zkopírování celého textu"></div>
-    </div>
-
-    <!-- RESET -->
-    <div class="reset-sekce">
-        <button type="button" class="btn-reset" id="btn-reset">RESET</button>
+        <div class="radek">Vložit:</div>
+        <div class="copy-box copy-block" id="zaverecny-blok">Dobrý den, 
+omlouváme se za komplikace spojené s doručením Vaší objednávky č. pole Z1. 
+Bohužel se nám nepodařilo objednávku doručit kompletně. 
+Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ pole R, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
+Reklamační případ naleznete v:
+Moje Alza > Reklamace
+Novou objednávku na chybějící zboží č. pole Z2 naleznete ve své registraci a aktuálně se zpracovává. 
+Předpokládaný termín doručení je pole D
+Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
+Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
+Přejeme Vám hezký den.</div>
     </div>
 
     <script>
-        const MAX_PRODUKTU = 20;
-        let pocetZobrazenychProduktu = 1;
-
-        const produktyKontejner = document.getElementById('produkty-kontejner');
-        const produktyKopieVystup = document.getElementById('produkty-kopie-vystup');
-
-        // Vykreslení řádků produktů (1 až 20)
-        function vytvorProdukty() {
-            produktyKontejner.innerHTML = '';
-            for (let i = 1; i <= MAX_PRODUKTU; i++) {
-                const radek = document.createElement('div');
-                radek.className = 'produkt-radek';
-                radek.id = `produkt-radek-${i}`;
-                radek.style.display = i === 1 ? 'flex' : 'none';
-
-                radek.innerHTML = `
-                    <span>Kód produktu <input type="text" id="pole-K${i}" placeholder="K${i}"></span>
-                    <span>Počet produktů <input type="text" id="pole-P${i}" placeholder="P${i}" style="width: 90px;"></span>
-                    ${i < MAX_PRODUKTU ? `<button type="button" class="btn btn-pridat" data-index="${i}">+ Přidat produkt</button>` : ''}
-                `;
-                produktyKontejner.appendChild(radek);
-            }
-
-            // Obsluha tlačítek "+ Přidat produkt"
-            document.querySelectorAll('.btn-pridat').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const aktualni = parseInt(e.target.getAttribute('data-index'));
-                    const dalsi = aktualni + 1;
-                    if (dalsi <= MAX_PRODUKTU) {
-                        document.getElementById(`produkt-radek-${dalsi}`).style.display = 'flex';
-                        e.target.style.display = 'none'; // skryje tlačítko na předchozím řádku
-                        pocetZobrazenychProduktu = dalsi;
-                    }
+        function zkopirujDoSchranky(text, prvek) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    ukazPotvrzeni(prvek);
+                }).catch(() => {
+                    zalozniKopie(text, prvek);
                 });
-            });
-
-            // Posluchače změn pro všechna K a P pole
-            for (let i = 1; i <= MAX_PRODUKTU; i++) {
-                document.getElementById(`pole-K${i}`).addEventListener('input', aktualizujVse);
-                document.getElementById(`pole-P${i}`).addEventListener('input', aktualizujVse);
+            } else {
+                zalozniKopie(text, prvek);
             }
         }
 
-        // Funkce pro kopírování do schránky
-        function zkopirujText(element, text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const puvodniText = element.textContent;
-                element.classList.add('copied');
-                if (!element.classList.contains('copy-block')) {
-                    element.textContent = 'Zkopírováno!';
-                    setTimeout(() => {
-                        element.classList.remove('copied');
-                        aktualizujVse();
-                    }, 700);
-                } else {
-                    setTimeout(() => {
-                        element.classList.remove('copied');
-                    }, 700);
-                }
-            });
+        function zalozniKopie(text, prvek) {
+            const docasnePole = document.createElement('textarea');
+            docasnePole.value = text;
+            docasnePole.style.position = 'fixed';
+            docasnePole.style.left = '-9999px';
+            document.body.appendChild(docasnePole);
+            docasnePole.select();
+            document.execCommand('copy');
+            document.body.removeChild(docasnePole);
+            ukazPotvrzeni(prvek);
         }
 
-        // Připojení kliknutí na všechny .copy-box prvky
+        function ukazPotvrzeni(prvek) {
+            prvek.classList.add('copied');
+            if (!prvek.classList.contains('copy-block')) {
+                const puvodni = prvek.textContent;
+                prvek.textContent = 'Zkopírováno!';
+                setTimeout(() => {
+                    prvek.classList.remove('copied');
+                    prvek.textContent = puvodni;
+                }, 700);
+            } else {
+                setTimeout(() => {
+                    prvek.classList.remove('copied');
+                }, 700);
+            }
+        }
+
         document.querySelectorAll('.copy-box').forEach(box => {
             box.addEventListener('click', () => {
-                const textKeKopii = box.getAttribute('data-copy') || box.innerText;
-                zkopirujText(box, textKeKopii);
+                const text = box.getAttribute('data-copy') || box.innerText;
+                zkopirujDoSchranky(text, box);
             });
         });
+    </script>
 
-        // Přepínání podmínky Kompenzace (Ano / Ne)
-        document.querySelectorAll('input[name="kompenzace"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const sekce = document.getElementById('kompenzace-sekce');
-                sekce.style.display = e.target.value === 'ano' ? 'block' : 'none';
-            });
-        });
-
-        // Hlavní aktualizace všech propisovaných hodnot
-        function aktualizujVse() {
-            const valF = document.getElementById('pole-F').value.trim();
-            const valC = document.getElementById('pole-C').value.trim();
-            const valZ1 = document.getElementById('pole-Z1').value.trim();
-            const valZ2 = document.getElementById('pole-Z2').value.trim();
-            const valK = document.getElementById('pole-K').value.trim();
-            const valD = document.getElementById('pole-D').value.trim();
-            const valR = document.getElementById('pole-R').value.trim();
-
-            // Aktualizace kopírovacích políček
-            const boxCFiltr = document.getElementById('copy-C-filtr');
-            boxCFiltr.textContent = valC || '[pole C]';
-            boxCFiltr.setAttribute('data-copy', valC);
-
-            const boxCKomp = document.getElementById('copy-C-komp');
-            boxCKomp.textContent = valC || '[pole C]';
-            boxCKomp.setAttribute('data-copy', valC);
-
-            const boxKKomp = document.getElementById('copy-K-komp');
-            boxKKomp.textContent = valK || '[pole K]';
-            boxKKomp.setAttribute('data-copy', valK);
-
-            const boxFRekl = document.getElementById('copy-F-rekl');
-            boxFRekl.textContent = valF || '[pole F]';
-            boxFRekl.setAttribute('data-copy', valF);
-
-            // Aktualizace kopie tabulky produktů
-            let radkyTabulky = '';
-            for (let i = 1; i <= MAX_PRODUKTU; i++) {
-                const k = document.getElementById(`pole-K${i}`).value.trim();
-                const p = document.getElementById(`pole-P${i}`).value.trim();
-                if (k !== '' || p !== '' || i === 1) {
-                    radkyTabulky += `<tr><td>${k || '-'}</td><td>${p || '-'}</td></tr>`;
-                }
-            }
-            produktyKopieVystup.innerHTML = `
-                <table class="souhrn-tabulka">
-                    <thead>
-                        <tr><th>Kód produktu</th><th>Počet produktů</th></tr>
-                    </thead>
-                    <tbody>${radkyTabulky}</tbody>
-                </table>
-            `;
-
-            // Aktualizace závěrečného textu pro CCT
-            const textZ1 = valZ1 || '[pole Z1]';
-            const textR = valR || '[pole R]';
-            const textZ2 = valZ2 || '[pole Z2]';
-            const textD = valD || '[pole D]';
-
-            const zaverecnyText = `Dobrý den, 
-omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${textZ1}. 
-Bohužel se nám nepodařilo objednávku doručit kompletně. 
-Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ ${textR}, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
-Reklamační případ naleznete v:
-Moje Alza > Reklamace
-Novou objednávku na chybějící zboží č. ${textZ2} naleznete ve své registraci a aktuálně se zpracovává. 
-Předpokládaný termín doručení je ${textD}
-Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
-Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
-Přejeme Vám hezký den.`;
-
-            const boxZaver = document.getElementById('copy-zaverecny-text');
-            boxZaver.textContent = zaverecnyText;
-            boxZaver.setAttribute('data-copy', zaverecnyText);
-        }
-
-        // Napojení posluchačů na hlavní vstupy
-        ['pole-F', 'pole-C', 'pole-Z1', 'pole-Z2', 'pole-K', 'pole-D', 'pole-R'].forEach(id => {
-            document.getElementById(id).addEventListener('input', aktualizujVse);
-        });
-
-        // Tlačítko RESET
-        document.getElementById('btn-reset').addEventListener('click', () => {
-            // Vymazání všech textových inputů
-            document.querySelectorAll('input[type="text"]').forEach
+</body>
+</html>
