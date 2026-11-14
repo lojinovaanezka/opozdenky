@@ -2,16 +2,231 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podpora řešení případů – Krok 1</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 780px;
+            margin: 20px auto 60px auto;
+            padding: 0 15px;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #f4f5f7;
+        }
+        .sekce {
+            background: #ffffff;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+        h2 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #0056b3;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 6px;
+        }
+        .radek {
+            margin: 8px 0;
+        }
+        .copy-box {
+            display: inline-block;
+            background: #eef5ff;
+            border: 1px dashed #0056b3;
+            color: #003d80;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .copy-box:hover {
+            background: #d6e7ff;
+        }
+        .copy-box.copied {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .copy-block {
+            display: block;
+            white-space: pre-wrap;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 12px;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-    <button id="tlacitko" style="padding: 20px; font-size: 20px;">Klikni na mě</button>
-    <p id="vystup">Zatím nekliknuto</p>
+
+    <div class="sekce">
+        <h2>Faktura</h2>
+        <div class="radek">Číslo faktury [pole F]</div>
+        <div class="radek">Přejít na AB administrace</div>
+    </div>
+
+    <div class="sekce">
+        <h2>AB administrace</h2>
+        <div class="radek">Přehodit stav na “storno”</div>
+        <div class="radek">Kód produktu [pole K1] &nbsp;&nbsp;&nbsp;&nbsp; Počet produktů [pole P1]</div>
+        <div class="radek">Proklik přes číslo balíku na ship</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Ship</h2>
+        <div class="radek">Přehodit stav na “rozbaleno”</div>
+        <div class="radek">
+            Interní skladová poznámka 
+            <span class="copy-box" data-copy="systémově stornováno CC">systémově stornováno CC</span>
+        </div>
+        <div class="radek">Zavřít ship</div>
+        <div class="radek">Zavřít AB administraci</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Faktura</h2>
+        <div class="radek">Nový CCT</div>
+    </div>
+
+    <div class="sekce">
+        <h2>CCT</h2>
+        <div class="radek">Číslo CCT [pole C]</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Faktura</h2>
+        <div class="radek">ctrl + shift + A</div>
+        <div class="radek">
+            Opožděné - filtr - 
+            <span class="copy-box" data-copy="C">C</span> - 
+            <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> - 
+            vybrat produkty
+        </div>
+        <div class="radek">Produkty: [tabulka produktů]</div>
+        <div class="radek">Zpracovat</div>
+        <div class="radek">Přejít na objednávku</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Objednávka</h2>
+        <div class="radek">Zkopírovat číslo objednávky [pole Z1]</div>
+        <div class="radek">Vytvořit duplicitní objednávku</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Duplicitní objednávka</h2>
+        <div class="radek">Zkopírovat číslo objednávky [pole Z2]</div>
+        <div class="radek">Odstranit vše kromě dopravy a produktů</div>
+        <div class="radek">Třeba kompenzovat? Ano / Ne</div>
+        <div class="radek">Na kolik Kč? [pole K]</div>
+        <div class="radek">Vytvořit novou kompenzaci</div>
+        <div class="radek">
+            <strong>Kompenzace</strong><br>
+            ASKU makro… - 
+            <span class="copy-box" data-copy="pole C">pole C</span> - 
+            <span class="copy-box" data-copy="pole K">pole K</span>
+        </div>
+        <div class="radek">ctrl + alt + D</div>
+        <div class="radek">ctrl + F11</div>
+        <div class="radek">F12</div>
+        <div class="radek">Přejít na novou fakturu</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Nová faktura</h2>
+        <div class="radek">Zkopírovat čas doručení [pole D]</div>
+        <div class="radek">Přejít na starou fakturu</div>
+        <div class="radek">Pozavírat vše kromě CCT a staré faktury</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Stará faktura</h2>
+        <div class="radek">
+            Komentář 
+            <span class="copy-box" data-copy="-CVVYD-">-CVVYD-</span>
+        </div>
+        <div class="radek">Vydat doklad</div>
+        <div class="radek">Přejít na zadání reklamace</div>
+    </div>
+
+    <div class="sekce">
+        <h2>Zadání reklamace</h2>
+        <div class="radek">
+            Zadat číslo faktury 
+            <span class="copy-box" data-copy="pole F">pole F</span>
+        </div>
+        <div class="radek">Zkopírovat číslo reklamace [pole R]</div>
+        <div class="radek">Přejít na CCT</div>
+    </div>
+
+    <div class="sekce">
+        <h2>CCT</h2>
+        <div class="radek">Vložit:</div>
+        <div class="copy-box copy-block" id="zaverecny-blok">Dobrý den, 
+omlouváme se za komplikace spojené s doručením Vaší objednávky č. pole Z1. 
+Bohužel se nám nepodařilo objednávku doručit kompletně. 
+Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ pole R, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
+Reklamační případ naleznete v:
+Moje Alza > Reklamace
+Novou objednávku na chybějící zboží č. pole Z2 naleznete ve své registraci a aktuálně se zpracovává. 
+Předpokládaný termín doručení je pole D
+Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
+Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
+Přejeme Vám hezký den.</div>
+    </div>
 
     <script>
-        document.getElementById('tlacitko').addEventListener('click', function () {
-            document.getElementById('vystup').textContent = 'JAVE SKRIPT FUNGUJE!';
+        function zkopirujDoSchranky(text, prvek) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    ukazPotvrzeni(prvek);
+                }).catch(() => {
+                    zalozniKopie(text, prvek);
+                });
+            } else {
+                zalozniKopie(text, prvek);
+            }
+        }
+
+        function zalozniKopie(text, prvek) {
+            const docasnePole = document.createElement('textarea');
+            docasnePole.value = text;
+            docasnePole.style.position = 'fixed';
+            docasnePole.style.left = '-9999px';
+            document.body.appendChild(docasnePole);
+            docasnePole.select();
+            document.execCommand('copy');
+            document.body.removeChild(docasnePole);
+            ukazPotvrzeni(prvek);
+        }
+
+        function ukazPotvrzeni(prvek) {
+            prvek.classList.add('copied');
+            if (!prvek.classList.contains('copy-block')) {
+                const puvodni = prvek.textContent;
+                prvek.textContent = 'Zkopírováno!';
+                setTimeout(() => {
+                    prvek.classList.remove('copied');
+                    prvek.textContent = puvodni;
+                }, 700);
+            } else {
+                setTimeout(() => {
+                    prvek.classList.remove('copied');
+                }, 700);
+            }
+        }
+
+        document.querySelectorAll('.copy-box').forEach(box => {
+            box.addEventListener('click', () => {
+                const text = box.getAttribute('data-copy') || box.innerText;
+                zkopirujDoSchranky(text, box);
+            });
         });
     </script>
+
 </body>
 </html>
