@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podpora řešení případů – Krok 1</title>
+    <title>Podpora řešení případů – Krok 2</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -30,6 +30,24 @@
         }
         .radek {
             margin: 8px 0;
+        }
+        input[type="text"] {
+            padding: 5px 9px;
+            border: 1px solid #b0b5bd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            width: 190px;
+            margin-left: 6px;
+            background-color: #fff;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.15);
+        }
+        input.small-input {
+            width: 75px;
         }
         .copy-box {
             display: inline-block;
@@ -65,14 +83,20 @@
 
     <div class="sekce">
         <h2>Faktura</h2>
-        <div class="radek">Číslo faktury [pole F]</div>
+        <div class="radek">
+            Číslo faktury <input type="text" id="pole-F" placeholder="pole F">
+        </div>
         <div class="radek">Přejít na AB administrace</div>
     </div>
 
     <div class="sekce">
         <h2>AB administrace</h2>
         <div class="radek">Přehodit stav na “storno”</div>
-        <div class="radek">Kód produktu [pole K1] &nbsp;&nbsp;&nbsp;&nbsp; Počet produktů [pole P1]</div>
+        <div class="radek">
+            Kód produktu <input type="text" id="pole-K1" placeholder="pole K1">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            Počet produktů <input type="text" id="pole-P1" class="small-input" placeholder="pole P1">
+        </div>
         <div class="radek">Proklik přes číslo balíku na ship</div>
     </div>
 
@@ -94,7 +118,9 @@
 
     <div class="sekce">
         <h2>CCT</h2>
-        <div class="radek">Číslo CCT [pole C]</div>
+        <div class="radek">
+            Číslo CCT <input type="text" id="pole-C" placeholder="pole C">
+        </div>
     </div>
 
     <div class="sekce">
@@ -108,21 +134,27 @@
         </div>
         <div class="radek">Produkty: [tabulka produktů]</div>
         <div class="radek">Zpracovat</div>
-        <div class="radek">Přejít na objednávku</div>
+        <div class="radek">Přejít na zakázku</div>
     </div>
 
     <div class="sekce">
-        <h2>Objednávka</h2>
-        <div class="radek">Zkopírovat číslo objednávky [pole Z1]</div>
+        <h2>Zakázka</h2>
+        <div class="radek">
+            Zkopírovat číslo zakázky <input type="text" id="pole-Z1" placeholder="pole Z1">
+        </div>
         <div class="radek">Vytvořit duplicitní objednávku</div>
     </div>
 
     <div class="sekce">
         <h2>Duplicitní objednávka</h2>
-        <div class="radek">Zkopírovat číslo objednávky [pole Z2]</div>
+        <div class="radek">
+            Zkopírovat číslo zakázky <input type="text" id="pole-Z2" placeholder="pole Z2">
+        </div>
         <div class="radek">Odstranit vše kromě dopravy a produktů</div>
         <div class="radek">Třeba kompenzovat? Ano / Ne</div>
-        <div class="radek">Na kolik Kč? [pole K]</div>
+        <div class="radek">
+            Na kolik Kč? <input type="text" id="pole-K" class="small-input" placeholder="pole K">
+        </div>
         <div class="radek">Vytvořit novou kompenzaci</div>
         <div class="radek">
             <strong>Kompenzace</strong><br>
@@ -130,6 +162,7 @@
             <span class="copy-box" data-copy="pole C">pole C</span> - 
             <span class="copy-box" data-copy="pole K">pole K</span>
         </div>
+        <div class="radek"><strong>Duplicitní zakázka</strong></div>
         <div class="radek">ctrl + alt + D</div>
         <div class="radek">ctrl + F11</div>
         <div class="radek">F12</div>
@@ -138,7 +171,9 @@
 
     <div class="sekce">
         <h2>Nová faktura</h2>
-        <div class="radek">Zkopírovat čas doručení [pole D]</div>
+        <div class="radek">
+            Zkopírovat čas doručení <input type="text" id="pole-D" placeholder="pole D">
+        </div>
         <div class="radek">Přejít na starou fakturu</div>
         <div class="radek">Pozavírat vše kromě CCT a staré faktury</div>
     </div>
@@ -159,7 +194,9 @@
             Zadat číslo faktury 
             <span class="copy-box" data-copy="pole F">pole F</span>
         </div>
-        <div class="radek">Zkopírovat číslo reklamace [pole R]</div>
+        <div class="radek">
+            Zkopírovat číslo reklamace <input type="text" id="pole-R" placeholder="pole R">
+        </div>
         <div class="radek">Přejít na CCT</div>
     </div>
 
@@ -172,7 +209,7 @@ Bohužel se nám nepodařilo objednávku doručit kompletně.
 Během doručování nastala neočekávaná situace, která ovlivnila standardní průběh dodání. Abychom Vám zajistili co nejrychlejší doručení, vytvořili jsme pro Vaši objednávku reklamační případ pole R, ze kterého jsme pro Vás zároveň vytvořili novou objednávku. Není potřeba z Vaší strany cokoli řešit. 
 Reklamační případ naleznete v:
 Moje Alza > Reklamace
-Novou objednávku na chybějící zboží č. pole Z2 naleznete ve své registraci a aktuálně se zpracovává. 
+Novou objednávku na chybějící zboží č. pole Z2naleznete ve své registraci a aktuálně se zpracovává. 
 Předpokládaný termín doručení je pole D
 Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
