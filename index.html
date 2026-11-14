@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podpora řešení případů – Krok 4</title>
+    <title>Podpora řešení případů – Krok 5</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -91,6 +91,36 @@
         .btn-add:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        .btn-volba {
+            padding: 4px 14px;
+            font-size: 13px;
+            border-radius: 4px;
+            border: 1px solid #b0b5bd;
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            cursor: pointer;
+            font-family: inherit;
+            margin-left: 6px;
+            transition: all 0.15s;
+        }
+        .btn-volba:hover {
+            background-color: #e9ecef;
+        }
+        .btn-volba.aktivni-ano {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .btn-volba.aktivni-ne {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .skryto {
+            display: none;
         }
         .copy-box {
             display: inline-block;
@@ -221,18 +251,26 @@
             Zkopírovat číslo zakázky <input type="text" id="pole-Z2" placeholder="pole Z2">
         </div>
         <div class="radek">Odstranit vše kromě dopravy a produktů</div>
-        <div class="radek">Třeba kompenzovat? Ano / Ne</div>
         <div class="radek">
-            Na kolik Kč? <input type="text" id="pole-K" class="small-input" placeholder="pole K">
+            Třeba kompenzovat?
+            <button type="button" id="btn-komp-ano" class="btn-volba">Ano</button>
+            <button type="button" id="btn-komp-ne" class="btn-volba">Ne</button>
         </div>
-        <div class="radek">Vytvořit novou kompenzaci</div>
-        <div class="radek">
-            <strong>Kompenzace</strong><br>
-            ASKU makro… - 
-            <span class="copy-box" data-propis="C" data-default="pole C">pole C</span> - 
-            <span class="copy-box" data-propis="K" data-default="pole K">pole K</span>
+
+        <div id="blok-kompenzace" class="skryto">
+            <div class="radek">
+                Na kolik Kč? <input type="text" id="pole-K" class="small-input" placeholder="pole K">
+            </div>
+            <div class="radek">Vytvořit novou kompenzaci</div>
+            <div class="radek">
+                <strong>Kompenzace</strong><br>
+                ASKU makro… - 
+                <span class="copy-box" data-propis="C" data-default="pole C">pole C</span> - 
+                <span class="copy-box" data-propis="K" data-default="pole K">pole K</span>
+            </div>
+            <div class="radek"><strong>Duplicitní zakázka</strong></div>
         </div>
-        <div class="radek"><strong>Duplicitní zakázka</strong></div>
+
         <div class="radek">ctrl + alt + D</div>
         <div class="radek">ctrl + F11</div>
         <div class="radek">F12</div>
@@ -387,6 +425,29 @@ Přejeme Vám hezký den.`;
                 btn.classList.add('hotovo-aktivni');
                 btn.textContent = 'Hotovo ✓';
             });
+        });
+
+        // Podmíněné zobrazení kompenzace (Ano / Ne) + propsání pole K
+        const btnAno = document.getElementById('btn-komp-ano');
+        const btnNe = document.getElementById('btn-komp-ne');
+        const blokKompenzace = document.getElementById('blok-kompenzace');
+        const inputPoleK = document.getElementById('pole-K');
+
+        btnAno.addEventListener('click', () => {
+            blokKompenzace.classList.remove('skryto');
+            btnAno.classList.add('aktivni-ano');
+            btnNe.classList.remove('aktivni-ne');
+            aktualizujVsechnyPropsani();
+        });
+
+        btnNe.addEventListener('click', () => {
+            blokKompenzace.classList.add('skryto');
+            btnNe.classList.add('aktivni-ne');
+            btnAno.classList.remove('aktivni-ano');
+        });
+
+        inputPoleK.addEventListener('input', () => {
+            aktualizujVsechnyPropsani();
         });
 
         // Přidávání řádků produktů (až K20 a P20)
