@@ -600,7 +600,6 @@
                 .map((item, idx) => ({ ...item, index: idx }))
                 .filter(item => item.kod.trim() !== '');
 
-            // 1. Seznam pro "V okně" a "Ručně" a "Duplicitní zakázku"
             ['seznam-kodu-vokne', 'seznam-kodu-rucne', 'seznam-kodu-duplicita'].forEach(idKontejneru => {
                 const kont = document.getElementById(idKontejneru);
                 if (!kont) return;
@@ -621,7 +620,6 @@
                 });
             });
 
-            // 2. Seznam pro ověření dostupnosti v Zakázce
             const kontDost = document.getElementById('seznam-dostupnost');
             if (kontDost) {
                 kontDost.innerHTML = '';
@@ -710,7 +708,7 @@
 
             const nazvyNedostupnych = p.nedostupneProdukty
                 .map((item, idx) => item.nazev.trim() !== '' ? item.nazev.trim() : `název ${idx + 1}`)
-                .join('\n\n');
+                .join('\n');
 
             // E-mail 1: klasik + malý + dostupný
             document.getElementById('email-maly-dostupny').textContent =
@@ -790,7 +788,6 @@ Přejeme Vám hezký den.`;
                 }
             });
 
-            // Sekce bez podmínky (sekce-2 a sekce-12), řídí se jen postupným odhalením
             ['sekce-2', 'sekce-12'].forEach(id => {
                 const s = document.getElementById(id);
                 if (s) {
@@ -809,7 +806,6 @@ Přejeme Vám hezký den.`;
             aktualizujViditelnost();
         }
 
-        // Ovládání přepínacích skupin tlačítek
         document.querySelectorAll('.btn-volba[data-group]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const group = btn.getAttribute('data-group');
@@ -824,7 +820,6 @@ Přejeme Vám hezký den.`;
             });
         });
 
-        // Tlačítko "Nejde" (ruční reklamace)
         const btnNejde = document.getElementById('btn-nejde');
         btnNejde.addEventListener('click', () => {
             stav.nejde = !stav.nejde;
@@ -832,7 +827,6 @@ Přejeme Vám hezký den.`;
             aktualizujVse();
         });
 
-        // Přidávání dalších produktů až do 20
         const kontejnerProduktu = document.getElementById('produkty-kontejner');
         const btnPridatProdukt = document.getElementById('btn-pridat-produkt');
 
@@ -864,7 +858,6 @@ Přejeme Vám hezký den.`;
             }
         });
 
-        // Živé aktualizace při změně čísel nebo textů
         ['pole-F', 'pole-Jmeno', 'pole-PF', 'pole-PA', 'pole-CCT', 'pole-R', 'pole-dbpc', 'pole-dbph', 'pole-z1', 'pole-Z2', 'pole-zh', 'pole-D'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
@@ -872,7 +865,6 @@ Přejeme Vám hezký den.`;
             }
         });
 
-        // Tlačítka Hotovo u každého nadpisu – propíšou hodnoty a odhalí další relevantní sekci pod sebou
         function odhalitDalsiViditelnouSekci(startId) {
             const poradiSekci = [
                 'sekce-1', 'sekce-2', 'sekce-3', 'sekce-4', 'sekce-5',
@@ -909,7 +901,6 @@ Přejeme Vám hezký den.`;
             });
         });
 
-        // Kopírování do schránky
         function zkopirujDoSchranky(text, prvek) {
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -959,7 +950,6 @@ Přejeme Vám hezký den.`;
             });
         });
 
-        // Tlačítko RESET – vymaže vše a vrátí stránku na začátek
         document.getElementById('btn-reset').addEventListener('click', () => {
             document.querySelectorAll('input[type="text"], input[type="number"]').forEach(inp => {
                 inp.value = '';
@@ -976,7 +966,6 @@ Přejeme Vám hezký den.`;
             stav.odhaleneSekce = new Set(['sekce-1']);
             stav.produkty = [{ kod: '', dostupnost: 'dostupne', nazev: '' }];
 
-            // Smazat přidané řádky produktů 2..20 a ponechat jen 1.
             kontejnerProduktu.innerHTML = `
                 <div class="radek">
                     Kód produktu 1: <input type="text" id="pole-kod-1" class="kod-produktu-input" data-index="1" placeholder="kód produktu 1">
@@ -999,7 +988,6 @@ Přejeme Vám hezký den.`;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Prvotní vykreslení
         aktualizujVse();
     </script>
 
