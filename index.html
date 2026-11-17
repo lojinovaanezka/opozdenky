@@ -14,6 +14,107 @@
             color: #1a1a1a;
             background-color: #f4f5f7;
         }
+        .hlavni-zalozky {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .btn-hlavni-zalozka {
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid #0056b3;
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: #0056b3;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .btn-hlavni-zalozka:hover {
+            background-color: #eef5ff;
+        }
+        .btn-hlavni-zalozka.aktivni {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+        .podzalozky {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 12px 0 16px 0;
+        }
+        .btn-podzalozka {
+            padding: 6px 12px;
+            font-size: 13px;
+            border: 1px solid #b0b5bd;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .btn-podzalozka:hover {
+            background-color: #e9ecef;
+        }
+        .btn-podzalozka.aktivni {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .hledani-radek {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .hledani-input {
+            flex: 1;
+            padding: 8px 12px !important;
+            margin-left: 0 !important;
+            width: auto !important;
+            font-size: 14px;
+        }
+        .btn-smazat-hledani {
+            padding: 7px 12px;
+            font-size: 13px;
+            border: 1px solid #b0b5bd;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #333;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-smazat-hledani:hover {
+            background-color: #e9ecef;
+        }
+        .fraze-box {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+            background: #eef5ff;
+            border: 1px dashed #0056b3;
+            color: #003d80;
+            padding: 10px 14px;
+            border-radius: 5px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            cursor: pointer;
+            margin: 8px 0;
+            transition: background 0.15s;
+        }
+        .fraze-box:hover {
+            background: #d6e7ff;
+        }
+        .fraze-box.copied {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
         .sekce {
             background: #ffffff;
             border: 1px solid #dcdde1;
@@ -189,305 +290,486 @@
 </head>
 <body>
 
-    <!-- 1. FAKTURA -->
-    <div class="sekce" id="sekce-1">
-        <div class="sekce-zahlavi">
-            <h2>Faktura</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-2">Hotovo</button>
-        </div>
-        <div class="radek">
-            Číslo faktury: <input type="text" id="pole-F" placeholder="F">
-        </div>
-        <div class="radek">
-            Oslovení:
-            <button type="button" class="btn-volba" data-group="osloveni" data-value="pan">pan</button>
-            <button type="button" class="btn-volba" data-group="osloveni" data-value="paní">paní</button>
-            <input type="text" id="pole-Jmeno" placeholder="Jméno">
-        </div>
-        <div class="radek">
-            Kolik produktů je ve faktuře? <input type="number" id="pole-PF" class="small-input" placeholder="PF" min="0">
-        </div>
-        <div class="radek">
-            Jaký je způsob platby?
-            <button type="button" class="btn-volba" data-group="platba" data-value="terminal">Terminál</button>
-            <button type="button" class="btn-volba" data-group="platba" data-value="prikaz">Příkaz</button>
-            <button type="button" class="btn-volba" data-group="platba" data-value="predem">Předem</button>
-        </div>
-        <div class="radek podminka" data-cond="prikaz">-> Platby</div>
-        <div class="radek podminka" data-cond="prikaz">
-            Zaplaceno?
-            <button type="button" class="btn-volba" data-group="prikazStav" data-value="zaplaceno">Zaplaceno</button>
-            <button type="button" class="btn-volba" data-group="prikazStav" data-value="nezaplaceno">Nezaplaceno</button>
-        </div>
-        <div class="radek">-> AB administrace</div>
+    <!-- HLAVNÍ ZÁLOŽKY -->
+    <div class="hlavni-zalozky">
+        <button type="button" class="btn-hlavni-zalozka aktivni" data-tab="tab-opozdenky">Opožděnky - částečný výdej AB</button>
+        <button type="button" class="btn-hlavni-zalozka" data-tab="tab-chaty">Chaty</button>
     </div>
 
-    <!-- 2. AB ADMINISTRACE -->
-    <div class="sekce skryto" id="sekce-2">
-        <div class="sekce-zahlavi">
-            <h2>AB administrace</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-3">Hotovo</button>
-        </div>
-        <div class="radek">
-            Kolik je produktů v AB administraci? <input type="number" id="pole-PA" class="small-input" placeholder="PA" min="0">
-        </div>
-        <div class="radek podminka" data-cond="terminal">
-            Uhrazeno?
-            <button type="button" class="btn-volba" data-group="terminalStav" data-value="nehradit">Nehradit</button>
-            <button type="button" class="btn-volba" data-group="terminalStav" data-value="uhradit">Uhradit</button>
-        </div>
+    <!-- ZÁLOŽKA 1: OPOŽDĚNKY - ČÁSTEČNÝ VÝDEJ AB -->
+    <div id="tab-opozdenky" class="obsah-zalozky">
 
-        <!-- Větev EXTRA -->
-        <div class="radek podminka" data-cond="extra">Vyhledat řádek vloženo dopravcem a změnit všechny AB na tento</div>
-        <div class="radek podminka" data-cond="extra">Přepnout všechny balíky na vloženo dopravcem</div>
-        <div class="radek podminka" data-cond="extra">Přepnout k vyzvednutí</div>
-        <div class="radek podminka" data-cond="extra">Odeslat notifikaci</div>
-
-        <!-- Větev KLASIK -->
-        <div class="radek podminka" data-cond="klasik">
-            Důvod problematických produktů:
-            <button type="button" class="btn-volba" data-group="duvod" data-value="nevesel">nevešel se</button>
-            <button type="button" class="btn-volba" data-group="duvod" data-value="jiny">jiný</button>
-        </div>
-        <div class="radek podminka" data-cond="klasik && nevesel">
-            Je produkt opravdu velký?
-            <button type="button" class="btn-volba" data-group="velikost" data-value="velky">Velký</button>
-            <button type="button" class="btn-volba" data-group="velikost" data-value="maly">Malý</button>
-        </div>
-        <div class="radek podminka" data-cond="klasik">Problematické produkty přepnout na storno</div>
-        <div class="radek podminka" data-cond="klasik"><strong>Problematické produkty</strong></div>
-        <div class="podminka" data-cond="klasik">
-            <div id="produkty-kontejner">
-                <div class="radek">
-                    Kód produktu 1: <input type="text" id="pole-kod-1" class="kod-produktu-input" data-index="1" placeholder="kód produktu 1">
-                </div>
+        <!-- 1. FAKTURA -->
+        <div class="sekce" id="sekce-1">
+            <div class="sekce-zahlavi">
+                <h2>Faktura</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-2">Hotovo</button>
             </div>
-            <button type="button" id="btn-pridat-produkt" class="btn-add">+ Přidat další produkt</button>
-        </div>
-        <div class="radek podminka" data-cond="klasik">-> Proklik na ship</div>
-    </div>
-
-    <!-- 3. SHIP (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-3">
-        <div class="sekce-zahlavi">
-            <h2>Ship</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-4">Hotovo</button>
-        </div>
-        <div class="radek">Přehodit stav na rozbaleno</div>
-        <div class="radek">
-            Interní skladová poznámka 
-            <span class="copy-box" data-copy="systémově stornováno CC">systémově stornováno CC</span>
-        </div>
-        <div class="radek">Zavřít ship</div>
-        <div class="radek">Zavřít AB administraci</div>
-        <div class="radek">-> Faktura</div>
-    </div>
-
-    <!-- 4. FAKTURA - NOVÝ TICKET (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-4">
-        <div class="sekce-zahlavi">
-            <h2>Faktura</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-5">Hotovo</button>
-        </div>
-        <div class="radek">Nový ticket</div>
-    </div>
-
-    <!-- 5. CCT - ČÍSLO TICKETU (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-5">
-        <div class="sekce-zahlavi">
-            <h2>CCT</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-6">Hotovo</button>
-        </div>
-        <div class="radek">
-            Číslo ticketu: <input type="text" id="pole-CCT" placeholder="CCT">
-        </div>
-    </div>
-
-    <!-- 6. FAKTURA - ASKU V OKNĚ / RUČNĚ (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-6">
-        <div class="sekce-zahlavi">
-            <h2>Faktura</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-7">Hotovo</button>
-        </div>
-        <div class="radek">ctrl + shift + A</div>
-        <div class="radek">
-            Nutná ASKU ručně?
-            <button type="button" class="btn-volba" data-group="askuTyp" data-value="vOkne">V okně</button>
-            <button type="button" class="btn-volba" data-group="askuTyp" data-value="rucne">Ručně</button>
-        </div>
-
-        <!-- V okně -->
-        <div class="radek podminka" data-cond="vOkne">
-            Opožděné filtr 
-            <span class="copy-box" data-propis="CCT" data-default="CCT">CCT</span> 
-            <span class="copy-box" data-copy="nedorazilo">nedorazilo</span>
-        </div>
-        <div class="seznam-produktu-box podminka" data-cond="vOkne" id="seznam-kodu-vokne"></div>
-        <div class="radek podminka" data-cond="vOkne">Zpracovat</div>
-
-        <!-- Ručně -->
-        <div class="radek podminka" data-cond="rucne"><strong>Zadání reklamace</strong></div>
-        <div class="radek podminka" data-cond="rucne">
-            Číslo faktury: <span class="copy-box" data-propis="F" data-default="F">F</span>
-        </div>
-        <div class="seznam-produktu-box podminka" data-cond="rucne" id="seznam-kodu-rucne"></div>
-        <div class="radek podminka" data-cond="rucne">
-            Nejde reklamovat?
-            <button type="button" class="btn-volba" id="btn-nejde" data-value="nejde">Nejde</button>
-        </div>
-        <div class="radek podminka" data-cond="rucne">
-            <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> 
-            <span class="copy-box" data-propis="CCT" data-default="CCT">CCT</span>
-        </div>
-    </div>
-
-    <!-- 7. DOBROPIS (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-7">
-        <div class="sekce-zahlavi">
-            <h2>Dobropis</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-8">Hotovo</button>
-        </div>
-        <div class="radek">
-            Číslo reklamace: <input type="text" id="pole-R" placeholder="R">
-        </div>
-        <div class="radek">
-            Číslo dobropisu: <input type="text" id="pole-dbpc" placeholder="dbpc">
-        </div>
-        <div class="radek">
-            Hodnota dobropisu: <input type="number" id="pole-dbph" class="small-input" placeholder="dbph" step="any">
-        </div>
-        <div class="radek">-> Faktura</div>
-    </div>
-
-    <!-- 8. FAKTURA -> ZAKÁZKA (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-8">
-        <div class="sekce-zahlavi">
-            <h2>Faktura</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-9">Hotovo</button>
-        </div>
-        <div class="radek">-> Zakázka</div>
-    </div>
-
-    <!-- 9. ZAKÁZKA + DOSTUPNOST PRODUKTŮ (jen klasik) -->
-    <div class="sekce podminka skryto" data-cond="klasik" id="sekce-9">
-        <div class="sekce-zahlavi">
-            <h2>Zakázka</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-10">Hotovo</button>
-        </div>
-        <div class="radek">
-            Číslo zakázky: <input type="text" id="pole-z1" placeholder="z1">
-        </div>
-        <div class="radek">Ověřit dostupnost u:</div>
-        <div class="seznam-produktu-box" id="seznam-dostupnost"></div>
-        <div class="radek podminka" data-cond="klasik && maly && dostupny">Vytvořit duplicitní zakázku</div>
-    </div>
-
-    <!-- 10. DUPLICITNÍ ZAKÁZKA (jen klasik + malý + dostupný) -->
-    <div class="sekce podminka skryto" data-cond="klasik && maly && dostupny" id="sekce-10">
-        <div class="sekce-zahlavi">
-            <h2>Duplicitní zakázka</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-11">Hotovo</button>
-        </div>
-        <div class="radek">
-            Číslo nové zakázky: <input type="text" id="pole-Z2" placeholder="Z2">
-        </div>
-        <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">Změnit způsob platby na zápočtem</div>
-        <div class="radek">Odstranit všechny produkty kromě dopravy a:</div>
-        <div class="seznam-produktu-box" id="seznam-kodu-duplicita"></div>
-        <div class="radek">
-            Hodnota nové zakázky: <input type="number" id="pole-zh" class="small-input" placeholder="zh" step="any">
-        </div>
-        <div class="radek podminka" data-cond="kompenzace">-> Kompenzace -> Nová kompenzace</div>
-
-        <!-- Podsekce Kompenzace -->
-        <div class="podminka" data-cond="kompenzace" style="margin: 12px 0; padding: 10px 14px; background: #f8f9fa; border-left: 3px solid #0056b3; border-radius: 4px;">
-            <div class="radek"><strong>Kompenzace</strong></div>
             <div class="radek">
-                <span class="copy-box" data-copy="ASKU makro">ASKU makro</span> 
-                <span class="copy-box" data-propis="CCT" data-default="CCT">CCT</span> 
-                <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> 
-                <span class="copy-box" data-propis="rozdilKomp" data-default="zh - dbph">zh - dbph</span>
+                Číslo faktury: <input type="text" id="pole-F" placeholder="F">
             </div>
-            <div class="radek">-> Duplicitní zakázka</div>
-            <div class="radek"><strong>Duplicitní zakázka</strong></div>
+            <div class="radek">
+                Oslovení:
+                <button type="button" class="btn-volba" data-group="osloveni" data-value="pan">pan</button>
+                <button type="button" class="btn-volba" data-group="osloveni" data-value="paní">paní</button>
+                <input type="text" id="pole-Jmeno" placeholder="Jméno">
+            </div>
+            <div class="radek">
+                Kolik produktů je ve faktuře? <input type="number" id="pole-PF" class="small-input" placeholder="PF" min="0">
+            </div>
+            <div class="radek">
+                Jaký je způsob platby?
+                <button type="button" class="btn-volba" data-group="platba" data-value="terminal">Terminál</button>
+                <button type="button" class="btn-volba" data-group="platba" data-value="prikaz">Příkaz</button>
+                <button type="button" class="btn-volba" data-group="platba" data-value="predem">Předem</button>
+            </div>
+            <div class="radek podminka" data-cond="prikaz">-> Platby</div>
+            <div class="radek podminka" data-cond="prikaz">
+                Zaplaceno?
+                <button type="button" class="btn-volba" data-group="prikazStav" data-value="zaplaceno">Zaplaceno</button>
+                <button type="button" class="btn-volba" data-group="prikazStav" data-value="nezaplaceno">Nezaplaceno</button>
+            </div>
+            <div class="radek">-> AB administrace</div>
         </div>
 
-        <div class="radek">ctrl + alt + D</div>
-        <div class="radek">ctrl + F11</div>
-        <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">F12</div>
-        <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">uhradit</div>
-        <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">ctrl + alt + P</div>
-        <div class="radek">-> Nová faktura</div>
-        <div class="radek">
-            Datum dodání: <input type="text" id="pole-D" placeholder="D">
+        <!-- 2. AB ADMINISTRACE -->
+        <div class="sekce skryto" id="sekce-2">
+            <div class="sekce-zahlavi">
+                <h2>AB administrace</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-3">Hotovo</button>
+            </div>
+            <div class="radek">
+                Kolik je produktů v AB administraci? <input type="number" id="pole-PA" class="small-input" placeholder="PA" min="0">
+            </div>
+            <div class="radek podminka" data-cond="terminal">
+                Uhrazeno?
+                <button type="button" class="btn-volba" data-group="terminalStav" data-value="nehradit">Nehradit</button>
+                <button type="button" class="btn-volba" data-group="terminalStav" data-value="uhradit">Uhradit</button>
+            </div>
+
+            <!-- Větev EXTRA -->
+            <div class="radek podminka" data-cond="extra">Vyhledat řádek vloženo dopravcem a změnit všechny AB na tento</div>
+            <div class="radek podminka" data-cond="extra">Přepnout všechny balíky na vloženo dopravcem</div>
+            <div class="radek podminka" data-cond="extra">Přepnout k vyzvednutí</div>
+            <div class="radek podminka" data-cond="extra">Odeslat notifikaci</div>
+
+            <!-- Větev KLASIK -->
+            <div class="radek podminka" data-cond="klasik">
+                Důvod problematických produktů:
+                <button type="button" class="btn-volba" data-group="duvod" data-value="nevesel">nevešel se</button>
+                <button type="button" class="btn-volba" data-group="duvod" data-value="jiny">jiný</button>
+            </div>
+            <div class="radek podminka" data-cond="klasik && nevesel">
+                Je produkt opravdu velký?
+                <button type="button" class="btn-volba" data-group="velikost" data-value="velky">Velký</button>
+                <button type="button" class="btn-volba" data-group="velikost" data-value="maly">Malý</button>
+            </div>
+            <div class="radek podminka" data-cond="klasik">Problematické produkty přepnout na storno</div>
+            <div class="radek podminka" data-cond="klasik"><strong>Problematické produkty</strong></div>
+            <div class="podminka" data-cond="klasik">
+                <div id="produkty-kontejner">
+                    <div class="radek">
+                        Kód produktu 1: <input type="text" id="pole-kod-1" class="kod-produktu-input" data-index="1" placeholder="kód produktu 1">
+                    </div>
+                </div>
+                <button type="button" id="btn-pridat-produkt" class="btn-add">+ Přidat další produkt</button>
+            </div>
+            <div class="radek podminka" data-cond="klasik">-> Proklik na ship</div>
         </div>
-        <div class="radek">-> Stará faktura</div>
+
+        <!-- 3. SHIP (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-3">
+            <div class="sekce-zahlavi">
+                <h2>Ship</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-4">Hotovo</button>
+            </div>
+            <div class="radek">Přehodit stav na rozbaleno</div>
+            <div class="radek">
+                Interní skladová poznámka 
+                <span class="copy-box" data-copy="systémově stornováno CC">systémově stornováno CC</span>
+            </div>
+            <div class="radek">Zavřít ship</div>
+            <div class="radek">Zavřít AB administraci</div>
+            <div class="radek">-> Faktura</div>
+        </div>
+
+        <!-- 4. FAKTURA - NOVÝ TICKET (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-4">
+            <div class="sekce-zahlavi">
+                <h2>Faktura</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-5">Hotovo</button>
+            </div>
+            <div class="radek">Nový ticket</div>
+        </div>
+
+        <!-- 5. CCT - ČÍSLO TICKETU (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-5">
+            <div class="sekce-zahlavi">
+                <h2>CCT</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-6">Hotovo</button>
+            </div>
+            <div class="radek">
+                Číslo ticketu: <input type="text" id="pole-CCT" placeholder="CCT">
+            </div>
+        </div>
+
+        <!-- 6. FAKTURA - ASKU V OKNĚ / RUČNĚ (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-6">
+            <div class="sekce-zahlavi">
+                <h2>Faktura</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-7">Hotovo</button>
+            </div>
+            <div class="radek">ctrl + shift + A</div>
+            <div class="radek">
+                Nutná ASKU ručně?
+                <button type="button" class="btn-volba" data-group="askuTyp" data-value="vOkne">V okně</button>
+                <button type="button" class="btn-volba" data-group="askuTyp" data-value="rucne">Ručně</button>
+            </div>
+
+            <!-- V okně -->
+            <div class="radek podminka" data-cond="vOkne">
+                Opožděné filtr 
+                <span class="copy-box" data-propis="CCT" data-default="CCT">CCT</span> 
+                <span class="copy-box" data-copy="nedorazilo">nedorazilo</span>
+            </div>
+            <div class="seznam-produktu-box podminka" data-cond="vOkne" id="seznam-kodu-vokne"></div>
+            <div class="radek podminka" data-cond="vOkne">Zpracovat</div>
+
+            <!-- Ručně -->
+            <div class="radek podminka" data-cond="rucne"><strong>Zadání reklamace</strong></div>
+            <div class="radek podminka" data-cond="rucne">
+                Číslo faktury: <span class="copy-box" data-propis="F" data-default="F">F</span>
+            </div>
+            <div class="seznam-produktu-box podminka" data-cond="rucne" id="seznam-kodu-rucne"></div>
+            <div class="radek podminka" data-cond="rucne">
+                Nejde reklamovat?
+                <button type="button" class="btn-volba" id="btn-nejde" data-value="nejde">Nejde</button>
+            </div>
+            <div class="radek podminka" data-cond="rucne">
+                <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> 
+                <span class="copy-box" data-propis="CCT" data-default="CCT">CCT</span>
+            </div>
+        </div>
+
+        <!-- 7. DOBROPIS (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-7">
+            <div class="sekce-zahlavi">
+                <h2>Dobropis</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-8">Hotovo</button>
+            </div>
+            <div class="radek">
+                Číslo reklamace: <input type="text" id="pole-R" placeholder="R">
+            </div>
+            <div class="radek">
+                Číslo dobropisu: <input type="text" id="pole-dbpc" placeholder="dbpc">
+            </div>
+            <div class="radek">
+                Hodnota dobropisu: <input type="number" id="pole-dbph" class="small-input" placeholder="dbph" step="any">
+            </div>
+            <div class="radek">-> Faktura</div>
+        </div>
+
+        <!-- 8. FAKTURA -> ZAKÁZKA (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-8">
+            <div class="sekce-zahlavi">
+                <h2>Faktura</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-9">Hotovo</button>
+            </div>
+            <div class="radek">-> Zakázka</div>
+        </div>
+
+        <!-- 9. ZAKÁZKA + DOSTUPNOST PRODUKTŮ (jen klasik) -->
+        <div class="sekce podminka skryto" data-cond="klasik" id="sekce-9">
+            <div class="sekce-zahlavi">
+                <h2>Zakázka</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-10">Hotovo</button>
+            </div>
+            <div class="radek">
+                Číslo zakázky: <input type="text" id="pole-z1" placeholder="z1">
+            </div>
+            <div class="radek">Ověřit dostupnost u:</div>
+            <div class="seznam-produktu-box" id="seznam-dostupnost"></div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny">Vytvořit duplicitní zakázku</div>
+        </div>
+
+        <!-- 10. DUPLICITNÍ ZAKÁZKA (jen klasik + malý + dostupný) -->
+        <div class="sekce podminka skryto" data-cond="klasik && maly && dostupny" id="sekce-10">
+            <div class="sekce-zahlavi">
+                <h2>Duplicitní zakázka</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-11">Hotovo</button>
+            </div>
+            <div class="radek">
+                Číslo nové zakázky: <input type="text" id="pole-Z2" placeholder="Z2">
+            </div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">Změnit způsob platby na zápočtem</div>
+            <div class="radek">Odstranit všechny produkty kromě dopravy a:</div>
+            <div class="seznam-produktu-box" id="seznam-kodu-duplicita"></div>
+            <div class="radek">
+                Hodnota nové zakázky: <input type="number" id="pole-zh" class="small-input" placeholder="zh" step="any">
+            </div>
+            <div class="radek podminka" data-cond="kompenzace">-> Kompenzace -> Nová kompenzace</div>
+
+            <!-- Podsekce Kompenzace -->
+            <div class="podminka" data-cond="kompenzace" style="margin: 12px 0; padding: 10px 14px; background: #f8f9fa; border-left: 3px solid #0056b3; border-radius: 4px;">
+                <div class="radek"><strong>Kompenzace</strong></div>
+                <div class="radek">
+                    <span class="copy-box" data-copy="ASKU makro">ASKU makro</span> 
+                    <span class="copy-box" data-propis="CCT" data-default="CCT">CCT</span> 
+                    <span class="copy-box" data-copy="nedorazilo">nedorazilo</span> 
+                    <span class="copy-box" data-propis="rozdilKomp" data-default="zh - dbph">zh - dbph</span>
+                </div>
+                <div class="radek">-> Duplicitní zakázka</div>
+                <div class="radek"><strong>Duplicitní zakázka</strong></div>
+            </div>
+
+            <div class="radek">ctrl + alt + D</div>
+            <div class="radek">ctrl + F11</div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">F12</div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">uhradit</div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">ctrl + alt + P</div>
+            <div class="radek">-> Nová faktura</div>
+            <div class="radek">
+                Datum dodání: <input type="text" id="pole-D" placeholder="D">
+            </div>
+            <div class="radek">-> Stará faktura</div>
+        </div>
+
+        <!-- 11. DOBROPIS - BLOKACE REFUNDACE (jen klasik + velký + dostupný + zaplacený) -->
+        <div class="sekce podminka skryto" data-cond="klasik && velky && dostupny && zaplaceno" id="sekce-11">
+            <div class="sekce-zahlavi">
+                <h2>Dobropis</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-12">Hotovo</button>
+            </div>
+            <div class="radek">-> Dobropis</div>
+            <div class="radek">Blokace refundace</div>
+            <div class="radek">-> Faktura</div>
+        </div>
+
+        <!-- 12. FAKTURA ZÁVĚREČNÁ (pro úplně všechny případy včetně extra) -->
+        <div class="sekce skryto" id="sekce-12">
+            <div class="sekce-zahlavi">
+                <h2>Faktura</h2>
+                <button type="button" class="btn-hotovo" data-odhalit="sekce-13">Hotovo</button>
+            </div>
+            <div class="radek podminka" data-cond="klasik && nezaplaceno">F12</div>
+            <div class="radek">
+                Komentář: <span class="copy-box" data-copy="-CVVYD-">-CVVYD-</span>
+            </div>
+            <div class="radek">Vydat doklad</div>
+            <div class="radek">Shift + F5</div>
+            <div class="radek">Zkontrolovat změnu</div>
+            <div class="radek podminka" data-cond="klasik">-> CCT</div>
+        </div>
+
+        <!-- 13. CCT E-MAILY (jen klasik podle kombinace podmínek) -->
+        <div class="sekce podminka skryto" data-cond="klasik && (malydostupny || nedostupny || velkydostupny)" id="sekce-13">
+            <div class="sekce-zahlavi">
+                <h2>CCT</h2>
+                <button type="button" class="btn-hotovo">Hotovo</button>
+            </div>
+
+            <!-- E-mail 1: klasik + malý + dostupný -->
+            <div class="podminka" data-cond="klasik && maly && dostupny">
+                <div class="radek"><strong>Vložit (kompletní doposlání):</strong></div>
+                <div class="copy-box copy-block" id="email-maly-dostupny"></div>
+            </div>
+
+            <!-- E-mail 2: klasik + nedostupný + zaplacený -->
+            <div class="podminka" data-cond="klasik && nedostupny && zaplaceno">
+                <div class="radek"><strong>Vložit (nedostupné – zaplaceno):</strong></div>
+                <div class="copy-box copy-block" id="email-nedostupny-zaplaceno"></div>
+            </div>
+
+            <!-- E-mail 3: klasik + velký + dostupný -->
+            <div class="podminka" data-cond="klasik && velky && dostupny">
+                <div class="radek"><strong>Vložit (velký produkt – kapacita boxu):</strong></div>
+                <div class="copy-box copy-block" id="email-velky-dostupny"></div>
+            </div>
+
+            <!-- E-mail 4: klasik + nedostupný + nezaplacený -->
+            <div class="podminka" data-cond="klasik && nedostupny && nezaplaceno">
+                <div class="radek"><strong>Vložit (nedostupné – nezaplaceno):</strong></div>
+                <div class="copy-box copy-block" id="email-nedostupny-nezaplaceno"></div>
+            </div>
+        </div>
+
+        <div class="reset-zona">
+            <button type="button" id="btn-reset" class="btn-reset">RESET</button>
+        </div>
+
     </div>
 
-    <!-- 11. DOBROPIS - BLOKACE REFUNDACE (jen klasik + velký + dostupný + zaplacený) -->
-    <div class="sekce podminka skryto" data-cond="klasik && velky && dostupny && zaplaceno" id="sekce-11">
-        <div class="sekce-zahlavi">
-            <h2>Dobropis</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-12">Hotovo</button>
-        </div>
-        <div class="radek">-> Dobropis</div>
-        <div class="radek">Blokace refundace</div>
-        <div class="radek">-> Faktura</div>
-    </div>
+    <!-- ZÁLOŽKA 2: CHATY -->
+    <div id="tab-chaty" class="obsah-zalozky skryto">
+        <div class="sekce">
+            <div class="hledani-radek">
+                <input type="text" id="chat-hledani" class="hledani-input" placeholder="Vyhledat ve frázích...">
+                <button type="button" id="btn-smazat-hledani" class="btn-smazat-hledani">Vymazat</button>
+            </div>
 
-    <!-- 12. FAKTURA ZÁVĚREČNÁ (pro úplně všechny případy včetně extra) -->
-    <div class="sekce skryto" id="sekce-12">
-        <div class="sekce-zahlavi">
-            <h2>Faktura</h2>
-            <button type="button" class="btn-hotovo" data-odhalit="sekce-13">Hotovo</button>
-        </div>
-        <div class="radek podminka" data-cond="klasik && nezaplaceno">F12</div>
-        <div class="radek">
-            Komentář: <span class="copy-box" data-copy="-CVVYD-">-CVVYD-</span>
-        </div>
-        <div class="radek">Vydat doklad</div>
-        <div class="radek">Shift + F5</div>
-        <div class="radek">Zkontrolovat změnu</div>
-        <div class="radek podminka" data-cond="klasik">-> CCT</div>
-    </div>
+            <div class="podzalozky" id="chat-podzalozky">
+                <button type="button" class="btn-podzalozka aktivni" data-subtab="Základní">Základní</button>
+                <button type="button" class="btn-podzalozka" data-subtab="Zpožděná objednávka">Zpožděná objednávka</button>
+                <button type="button" class="btn-podzalozka" data-subtab="Poškozené zboží">Poškozené zboží</button>
+                <button type="button" class="btn-podzalozka" data-subtab="Poškozený obal nebo lehké poškození">Poškozený obal nebo lehké poškození</button>
+                <button type="button" class="btn-podzalozka" data-subtab="Prodloužení zásilky">Prodloužení zásilky</button>
+            </div>
 
-    <!-- 13. CCT E-MAILY (jen klasik podle kombinace podmínek) -->
-    <div class="sekce podminka skryto" data-cond="klasik && (malydostupny || nedostupny || velkydostupny)" id="sekce-13">
-        <div class="sekce-zahlavi">
-            <h2>CCT</h2>
-            <button type="button" class="btn-hotovo">Hotovo</button>
+            <div id="chat-seznam-frazi"></div>
         </div>
-
-        <!-- E-mail 1: klasik + malý + dostupný -->
-        <div class="podminka" data-cond="klasik && maly && dostupny">
-            <div class="radek"><strong>Vložit (kompletní doposlání):</strong></div>
-            <div class="copy-box copy-block" id="email-maly-dostupny"></div>
-        </div>
-
-        <!-- E-mail 2: klasik + nedostupný + zaplacený -->
-        <div class="podminka" data-cond="klasik && nedostupny && zaplaceno">
-            <div class="radek"><strong>Vložit (nedostupné – zaplaceno):</strong></div>
-            <div class="copy-box copy-block" id="email-nedostupny-zaplaceno"></div>
-        </div>
-
-        <!-- E-mail 3: klasik + velký + dostupný -->
-        <div class="podminka" data-cond="klasik && velky && dostupny">
-            <div class="radek"><strong>Vložit (velký produkt – kapacita boxu):</strong></div>
-            <div class="copy-box copy-block" id="email-velky-dostupny"></div>
-        </div>
-
-        <!-- E-mail 4: klasik + nedostupný + nezaplacený -->
-        <div class="podminka" data-cond="klasik && nedostupny && nezaplaceno">
-            <div class="radek"><strong>Vložit (nedostupné – nezaplaceno):</strong></div>
-            <div class="copy-box copy-block" id="email-nedostupny-nezaplaceno"></div>
-        </div>
-    </div>
-
-    <div class="reset-zona">
-        <button type="button" id="btn-reset" class="btn-reset">RESET</button>
     </div>
 
     <script>
+        // --- PŘEPÍNÁNÍ HLAVNÍCH ZÁLOŽEK ---
+        document.querySelectorAll('.btn-hlavni-zalozka').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+                document.querySelectorAll('.btn-hlavni-zalozka').forEach(b => b.classList.remove('aktivni'));
+                btn.classList.add('aktivni');
+
+                document.querySelectorAll('.obsah-zalozky').forEach(obsah => {
+                    if (obsah.id === targetTab) {
+                        obsah.classList.remove('skryto');
+                    } else {
+                        obsah.classList.add('skryto');
+                    }
+                });
+            });
+        });
+
+        // --- DATA A LOGIKA PRO ZÁLOŽKU CHATY ---
+        const chatFraze = [
+            {
+                kategorie: 'Základní',
+                text: 'Jmenuji se Anežka a budu se věnovat Vašemu požadavku.'
+            },
+            {
+                kategorie: 'Základní',
+                text: 'Prosím, napište mi číslo objednávky, abych si ji vyhledala v systému.'
+            },
+            {
+                kategorie: 'Základní',
+                text: 'S čím Vám mohu pomoci?'
+            },
+            {
+                kategorie: 'Základní',
+                text: 'Pokud je to vše, přeji hezký zbytek dne. Anežka, péče o zákazníky. V případě, že si přejete v konverzaci pokračovat, můžete ji znovu otevřít pomocí tlačítka “Pokračovat v konverzaci”.'
+            },
+            {
+                kategorie: 'Základní',
+                text: 'Delší dobu jsem od Vás neobdržela zprávu. Pokud je to vše, přeji hezký zbytek dne. Anežka, péče o zákazníky. V případě, že si přejete v konverzaci pokračovat, můžete ji znovu otevřít pomocí tlačítka “Pokračovat v konverzaci”.'
+            },
+            {
+                kategorie: 'Základní',
+                text: 'Mohu Vám pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Základní',
+                text: 'Poprosím Vás o chvilku strpení, hned Vaši situaci ověřím.'
+            },
+            {
+                kategorie: 'Zpožděná objednávka',
+                text: 'Za zpoždění se velice omlouvám. Dejte mi, prosím, vteřinku a podívám se, kde se zásilka momentálně nachází.'
+            },
+            {
+                kategorie: 'Zpožděná objednávka',
+                text: 'Vyhledala jsem pohyb Vaší zásilky. Evidujeme u ní zdržení kvůli logistické chybě. V tuto chvíli ale mohu potvrdit, že balík není ztracený ani zaseknutý, tedy v novém termínu s nejvyšší pravděpodobností dorazí.'
+            },
+            {
+                kategorie: 'Zpožděná objednávka',
+                text: 'Vyhledala jsem pohyb Vaší zásilky. Vidím, že došlo k logistické chybě a balík se v tuto chvíli nepohybuje běžným způsobem. Velice se tímto omlouvám za komplikace. V takové situaci je nejspolehlivějším řešením provést reklamaci a objednat balík nový. V drtivé většině situací se tímto problém vyřeší a nový balík přijde v běžné lhůtě.'
+            },
+            {
+                kategorie: 'Poškozené zboží',
+                text: 'Za poškození se velice omlouváme. Provedu pro Vás nyní reklamaci. Dejte mi, prosím, chvilku. Hned po dokončení reklamace Vás informuji e-mailem s potvrzením a případnými dalšími instrukcemi. Mohu pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Poškozený obal nebo lehké poškození',
+                text: 'Za poškození se velice omlouváme. Mám pro Vás v tuto chvíli dvě možnosti. Pokud poškození nemá vliv na funkci produktu, ráda bych Vám nabídla finanční kompenzaci jako pohodlnější a rychlejší možnost vyřízení. Pokud si ale raději přejete zboží nové, ráda pro Vás vyřídím i klasickou reklamaci.'
+            },
+            {
+                kategorie: 'Poškozený obal nebo lehké poškození',
+                text: 'Dobře. Vystavila jsem pro Vás nyní kompenzaci ve výši xxx Kč, kterou jsem Vám odeslala na Váš e-mail. Mohu pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Poškozený obal nebo lehké poškození',
+                text: 'Rozumím. Provedu pro Vás nyní reklamaci. Dejte mi, prosím, chvilku. Hned po dokončení reklamace Vás informuji e-mailem s potvrzením a případnými dalšími instrukcemi. Mohu pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Prodloužení zásilky',
+                text: 'Dejte mi vteřinku, vyhledám si Vaši zásilku a podívám se, co pro Vás mohu udělat.'
+            },
+            {
+                kategorie: 'Prodloužení zásilky',
+                text: 'Bohužel, Vaši zásilku nebylo možné z důvodu kapacity prodloužit. Mohu pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Prodloužení zásilky',
+                text: 'Bohužel, zásilku se mi podařilo prodloužit pouze do dd.mm. 00:00. Z důvodu kapacity AlzaBoxu není v našich silách ji pro Vás pozdržet déle. Mohu pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Prodloužení zásilky',
+                text: 'Uložení Vaší zásilky jsem nyní prodloužila do dd.mm. 00:00. Mohu pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Prodloužení zásilky',
+                text: 'Pokud zásilku vyzvednout nestihnete, vrátí se nám na sklad a v ten moment Vás refundujeme. Převedení peněz následně může trvat zhruba 2-3 pracovní dny. Mohu Vám pomoci ještě s něčím jiným?'
+            }
+        ];
+
+        let aktivniPodzalozka = 'Základní';
+        const chatHledaniInput = document.getElementById('chat-hledani');
+        const btnSmazatHledani = document.getElementById('btn-smazat-hledani');
+        const chatSeznamFrazi = document.getElementById('chat-seznam-frazi');
+
+        function vykresliChatFraze() {
+            const dotaz = chatHledaniInput.value.toLowerCase();
+            chatSeznamFrazi.innerHTML = '';
+
+            const filtrovane = chatFraze.filter(item => {
+                if (dotaz !== '') {
+                    return item.text.toLowerCase().includes(dotaz);
+                }
+                return item.kategorie === aktivniPodzalozka;
+            });
+
+            if (filtrovane.length === 0) {
+                chatSeznamFrazi.innerHTML = '<div class="radek" style="color:#6c757d;">Žádná fráze neodpovídá hledanému textu.</div>';
+                return;
+            }
+
+            filtrovane.forEach(item => {
+                const box = document.createElement('button');
+                box.type = 'button';
+                box.className = 'fraze-box';
+                box.textContent = item.text;
+                box.addEventListener('click', () => {
+                    zkopirujDoSchranky(item.text, box);
+                });
+                chatSeznamFrazi.appendChild(box);
+            });
+        }
+
+        document.querySelectorAll('.btn-podzalozka').forEach(btn => {
+            btn.addEventListener('click', () => {
+                aktivniPodzalozka = btn.getAttribute('data-subtab');
+                document.querySelectorAll('.btn-podzalozka').forEach(b => b.classList.remove('aktivni'));
+                btn.classList.add('aktivni');
+                vykresliChatFraze();
+            });
+        });
+
+        chatHledaniInput.addEventListener('input', vykresliChatFraze);
+
+        btnSmazatHledani.addEventListener('click', () => {
+            chatHledaniInput.value = '';
+            vykresliChatFraze();
+            chatHledaniInput.focus();
+        });
+
+        vykresliChatFraze();
+
+        // --- LOGIKA PRO ZÁLOŽKU OPOŽDĚNKY - ČÁSTEČNÝ VÝDEJ AB ---
         const stav = {
             osloveni: '',
             platba: '',
@@ -710,7 +992,6 @@
                 .map((item, idx) => item.nazev.trim() !== '' ? item.nazev.trim() : `název ${idx + 1}`)
                 .join('\n');
 
-            // E-mail 1: klasik + malý + dostupný
             document.getElementById('email-maly-dostupny').textContent =
 `Dobrý den, ${osloveniText} ${valJmeno},
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
@@ -724,7 +1005,6 @@ Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i na
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
 
-            // E-mail 2: klasik + nedostupný + zaplacený
             document.getElementById('email-nedostupny-zaplaceno').textContent =
 `Dobrý den, ${osloveniText} ${valJmeno},
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
@@ -738,7 +1018,6 @@ Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i na
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
 
-            // E-mail 3: klasik + velký + dostupný
             document.getElementById('email-velky-dostupny').textContent =
 `Dobrý den, ${osloveniText} ${valJmeno},
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
@@ -750,7 +1029,6 @@ Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i na
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
 
-            // E-mail 4: klasik + nedostupný + nezaplacený
             document.getElementById('email-nedostupny-nezaplaceno').textContent =
 `Dobrý den, ${osloveniText} ${valJmeno},
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
@@ -927,7 +1205,7 @@ Přejeme Vám hezký den.`;
 
         function ukazPotvrzeni(prvek) {
             prvek.classList.add('copied');
-            if (!prvek.classList.contains('copy-block')) {
+            if (!prvek.classList.contains('copy-block') && !prvek.classList.contains('fraze-box')) {
                 const puvodni = prvek.textContent;
                 prvek.textContent = 'Zkopírováno!';
                 setTimeout(() => {
@@ -952,7 +1230,9 @@ Přejeme Vám hezký den.`;
 
         document.getElementById('btn-reset').addEventListener('click', () => {
             document.querySelectorAll('input[type="text"], input[type="number"]').forEach(inp => {
-                inp.value = '';
+                if (inp.id !== 'chat-hledani') {
+                    inp.value = '';
+                }
             });
 
             stav.osloveni = '';
