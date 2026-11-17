@@ -609,6 +609,7 @@
 
             <div class="podzalozky" id="chat-podzalozky">
                 <button type="button" class="btn-podzalozka aktivni" data-subtab="Základní">Základní</button>
+                <button type="button" class="btn-podzalozka" data-subtab="Čestko">Čestko</button>
                 <button type="button" class="btn-podzalozka" data-subtab="Zpožděná objednávka">Zpožděná objednávka</button>
                 <button type="button" class="btn-podzalozka" data-subtab="Poškozené zboží">Poškozené zboží</button>
                 <button type="button" class="btn-podzalozka" data-subtab="Poškozený obal nebo lehké poškození">Poškozený obal nebo lehké poškození</button>
@@ -666,6 +667,18 @@
             {
                 kategorie: 'Základní',
                 text: 'Poprosím Vás o chvilku strpení, hned Vaši situaci ověřím.'
+            },
+            {
+                kategorie: 'Čestko',
+                text: 'Abych mohla řešení zahájit, prosím, vyplňte čestné prohlášení níže (stačí zkopírovat, vyplnit údaje na zvýrazněných místech a poslat zpět). \nJá, JMÉNO A PŘÍJMENÍ narozen/a DATUM NAROZENÍ s trvalým bydlištěm na adrese ADRESA tímto čestně prohlašuji, že objednávku č. ČÍSLO OBJEDNÁVKY, jsem k dnešnímu dni neobdržel/a a v případě, že bude doručována v následujících dnech, zavazuji se, že ji nepřevezmu a vzdávám se tak všech nároků na tuto objednávku. '
+            },
+            {
+                kategorie: 'Čestko',
+                text: 'Bohužel, bez čestného prohlášení pro Vás reklamaci nemohu provést.'
+            },
+            {
+                kategorie: 'Čestko',
+                text: 'Děkuji, nyní pro Vás reklamaci vytvořím a o jejím dokončení Vás informuji e-mailem. Bude to trvat pravděpodobně pár minut. Mohu Vám pomoci ještě s něčím jiným?'
             },
             {
                 kategorie: 'Zpožděná objednávka',
@@ -742,6 +755,7 @@
                 const box = document.createElement('button');
                 box.type = 'button';
                 box.className = 'fraze-box';
+                box.style.whiteSpace = 'pre-line';
                 box.textContent = item.text;
                 box.addEventListener('click', () => {
                     zkopirujDoSchranky(item.text, box);
