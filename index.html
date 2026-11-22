@@ -555,7 +555,7 @@
             <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">ctrl + alt + P</div>
             <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">-> Nová faktura</div>
             <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">
-                Datum dodání: <span class="copy-box" data-propis="D" data-default="D">D</span>
+                Datum dodání: <input type="text" class="pole-D-input" placeholder="D">
             </div>
             <div class="radek">-> Stará faktura</div>
         </div>
@@ -610,7 +610,7 @@
             </div>
             <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">-> nová faktura</div>
             <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">
-                Datum dodání: <span class="copy-box" data-propis="D" data-default="D">D</span>
+                Datum dodání: <input type="text" class="pole-D-input" placeholder="D">
             </div>
 
             <div class="radek podminka" data-cond="klasik">-> CCT</div>
@@ -645,12 +645,6 @@
             <div class="podminka" data-cond="klasik && nedostupny && nezaplaceno">
                 <div class="radek"><strong>Vložit (nedostupné – nezaplaceno):</strong></div>
                 <div class="copy-box copy-block" id="email-nedostupny-nezaplaceno"></div>
-            </div>
-
-            <!-- Verze HU (zástupný blok k doplnění) -->
-            <div class="podminka" data-cond="hu">
-                <div class="radek"><strong>Vložit (HU – doplnit maďarský text):</strong></div>
-                <div class="copy-box copy-block" id="email-hu">[HU šablona – doplní se]</div>
             </div>
         </div>
 
@@ -920,6 +914,7 @@
             askuTyp: '',
             nejde: false,
             hu: false,
+            datumDodani: '',
             odhaleneSekce: new Set(['sekce-1']),
             produkty: [{ kod: '', dostupnost: 'dostupne', nazev: '' }]
         };
@@ -1019,7 +1014,6 @@
                 case 'klasik && nedostupny && zaplaceno': return p.klasik && p.nedostupny && p.zaplaceno;
                 case 'klasik && velky && dostupny': return p.klasik && p.velky && p.dostupny;
                 case 'klasik && nedostupny && nezaplaceno': return p.klasik && p.nedostupny && p.nezaplaceno;
-                case 'hu': return p.hu;
                 default: return false;
             }
         }
@@ -1115,16 +1109,11 @@
             const valDbphText = ziskejText('pole-dbph', 'dbph');
             const valZ1 = ziskejText('pole-z1', 'Z1');
             const valZ2 = ziskejText('pole-Z2', 'Z2');
-            const valD = ziskejText('pole-D', 'D');
+            const valD = stav.datumDodani.trim() !== '' ? stav.datumDodani.trim() : 'D';
             const valJmeno = ziskejText('pole-Jmeno', 'Jméno');
             const valReferent = ziskejText('pole-referent', 'referent');
 
             const jeFirma = stav.osloveni === 'firma';
-            const osloveniText = stav.osloveni === 'pan' ? 'pane' : (stav.osloveni === 'paní' ? 'paní' : 'oslovení');
-            const uvodRadku = jeFirma ? 'Dobrý den,' : `Dobrý den, ${osloveniText} ${valJmeno},`;
-            const zastupceA = p.pnp > 1 ? 'produkty' : 'produkt';
-            const zastupceC = stav.osloveni === 'paní' ? 'vybrala' : (jeFirma ? 'vybrali' : 'vybral');
-
             const dbphNum = ziskejCislo('pole-dbph');
             const zhNum = ziskejCislo('pole-zh');
             const rozdilZaokrouhleno = (dbphNum !== null && zhNum !== null)
@@ -1137,7 +1126,6 @@
                 if (klic === 'CCT') box.textContent = valCCT;
                 if (klic === 'dbpc') box.textContent = valDbpc;
                 if (klic === 'Z2') box.textContent = valZ2;
-                if (klic === 'D') box.textContent = valD;
                 if (klic === 'referent') box.textContent = valReferent;
                 if (klic === 'rozdilKomp') box.textContent = rozdilZaokrouhleno;
             });
@@ -1146,8 +1134,56 @@
                 .map((item, idx) => item.nazev.trim() !== '' ? item.nazev.trim() : `název ${idx + 1}`)
                 .join('\n');
 
-            // E-mail 1: klasik + malý + dostupný
-            document.getElementById('email-maly-dostupny').textContent =
+            if (p.hu) {
+                // --- MAĎARSKÁ VERZE (HU) ---
+                const huOsloveni = stav.osloveni === 'pan' ? 'úr' : (stav.osloveni === 'paní' ? 'hölgy' : 'oslovení');
+                const huUvod = jeFirma ? 'Tisztelt Ügyfelünk,' : `Tisztelt ${huOsloveni} ${valJmeno},`;
+                const huZastupceA = p.pnp > 1 ? 'termékeket' : 'terméket';
+                const huZastupceC = jeFirma ? 'választották' : 'választotta';
+
+                // E-mail 1 HU: klasik + malý + dostupný
+                document.getElementById('email-maly-dostupny').textContent =
+`${huUvod}
+elnézést kérünk az ${valZ1} sz. rendelésének kiszállításával kapcsolatos kellemetlenségekért. Sajnos nem sikerült a rendelést teljes egészében kiszállítani. A kiszállítás során váratlan helyzet állt elő, amely befolyásolta a szállítás szokásos menetét. Annak érdekében, hogy a lehető leggyorsabb kiszállítást biztosítsuk Önnek, létrehoztunk a rendeléséhez egy ${valR} reklamációs esetet, amelyből egyúttal új rendelést is létrehoztunk Önnek. Az Ön részéről semmilyen teendő nincs. A reklamációs esetet itt találja: 
+Alza fiókom > Reklamáció 
+A hiányzó ${valZ2} sz. árukra vonatkozó új rendelést megtalálja a regisztrációjában, és jelenleg feldolgozás alatt áll. A várható szállítási határidő ${valD} Még egyszer elnézést kérünk a kialakult helyzetért, és örülnénk, ha továbbra is megőrizné bizalmát irántunk. Amennyiben bármilyen további kérése vagy kérdése van, ne habozzon kapcsolatba lépni velünk. 
+Szép napot kívánunk.`;
+
+                // E-mail 2 HU: klasik + nedostupný + zaplacený
+                document.getElementById('email-nedostupny-zaplaceno').textContent =
+`${huUvod}
+elnézést kérünk az ${valZ1} sz. rendelésének kiszállításával kapcsolatos kellemetlenségekért. Sajnos nem sikerült a rendelést teljes egészében kiszállítani. A kiszállítás során váratlan helyzet állt elő, amely befolyásolta a szállítás szokásos menetét. Annak érdekében, hogy a lehető leggyorsabb megoldást biztosítsuk Önnek, létrehoztunk a rendeléséhez egy ${valR} reklamációs esetet. Sajnos jelenleg nem áll rendelkezésünkre ${huZastupceA}:
+${nazvyNedostupnych}
+Ezért a reklamációs esetet a ${valDbpc} sz., ${valDbphText} Kč értékű jóváíró számlával rendeztük. Az összeg 3 munkanapon belül megérkezik a számlájára. A reklamációs esetet itt találja: Az Alza fiókom > Reklamáció  
+Még egyszer elnézést kérünk a kialakult helyzetért, és örülnénk, ha továbbra is megőrizné bizalmát irántunk. Amennyiben bármilyen további kérése vagy kérdése van, ne habozzon kapcsolatba lépni velünk. 
+Szép napot kívánunk.`;
+
+                // E-mail 3 HU: klasik + velký + dostupný
+                document.getElementById('email-velky-dostupny').textContent =
+`${huUvod}
+elnézést kérünk az ${valZ1} sz. rendelésének kiszállításával kapcsolatos kellemetlenségekért. Sajnos nem sikerült a rendelést teljes egészében kiszállítani a kiválasztott AlzaBox kapacitása miatt. Annak érdekében, hogy a rendelés fennmaradó részét a lehető leghamarabb kiszállítsuk Önnek, kérjük, adja meg, melyik átvevőhelyet vagy címet ${huZastupceC} a rendelés fennmaradó részének kiszállításához, amely a leginkább megfelelne Önnek. Kérjük, jelezze választását az e-mailre adott válaszban, és létrehozzuk az új rendelést az Ön által választott szállítási móddal. A rendelés ezen részéhez az ${valR} sz. reklamációs eset is létrejött, amelyet itt talál: 
+Alza fiókom > Reklamáció 
+Még egyszer elnézést kérünk a kialakult helyzetért, és örülnénk, ha továbbra is megőrizné bizalmát irántunk. Amennyiben bármilyen további kérése vagy kérdése van, ne habozzon kapcsolatba lépni velünk. 
+Szép napot kívánunk.`;
+
+                // E-mail 4 HU: klasik + nedostupný + nezaplacený
+                document.getElementById('email-nedostupny-nezaplaceno').textContent =
+`${huUvod}
+elnézést kérünk az ${valZ1} sz. rendelésének kiszállításával kapcsolatos kellemetlenségekért. Sajnos nem sikerült a rendelést teljes egészében kiszállítani. A kiszállítás során váratlan helyzet állt elő, amely befolyásolta a szállítás szokásos menetét. Annak érdekében, hogy a lehető leggyorsabb megoldást biztosítsuk Önnek, létrehoztunk a rendeléséhez egy ${valR} reklamációs esetet. Sajnos jelenleg nem áll rendelkezésünkre ${huZastupceA}:
+${nazvyNedostupnych}
+Ezért a reklamációs esetet a ${valDbpc} sz., ${valDbphText} Kč értékű jóváíró számlával rendeztük, és az eredeti számla csökkentésére használtuk fel. Az összeget tehát már ezzel az összeggel csökkentve fogja fizetni. A reklamációs esetet itt találja: 
+Alza fiókom > Reklamáció 
+Még egyszer elnézést kérünk a kialakult helyzetért, és örülnénk, ha továbbra is megőrizné bizalmát irántunk. Amennyiben bármilyen további kérése vagy kérdése van, ne habozzon kapcsolatba lépni velünk. 
+Szép napot kívánunk.`;
+            } else {
+                // --- ČESKÁ VERZE (CZ) ---
+                const osloveniText = stav.osloveni === 'pan' ? 'pane' : (stav.osloveni === 'paní' ? 'paní' : 'oslovení');
+                const uvodRadku = jeFirma ? 'Dobrý den,' : `Dobrý den, ${osloveniText} ${valJmeno},`;
+                const zastupceA = p.pnp > 1 ? 'produkty' : 'produkt';
+                const zastupceC = stav.osloveni === 'paní' ? 'vybrala' : (jeFirma ? 'vybrali' : 'vybral');
+
+                // E-mail 1 CZ: klasik + malý + dostupný
+                document.getElementById('email-maly-dostupny').textContent =
 `${uvodRadku}
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
 Bohužel se nám nepodařilo objednávku doručit kompletně. 
@@ -1160,8 +1196,8 @@ Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i na
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
 
-            // E-mail 2: klasik + nedostupný + zaplacený
-            document.getElementById('email-nedostupny-zaplaceno').textContent =
+                // E-mail 2 CZ: klasik + nedostupný + zaplacený
+                document.getElementById('email-nedostupny-zaplaceno').textContent =
 `${uvodRadku}
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
 Bohužel se nám nepodařilo objednávku doručit kompletně. 
@@ -1174,8 +1210,8 @@ Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i na
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
 
-            // E-mail 3: klasik + velký + dostupný
-            document.getElementById('email-velky-dostupny').textContent =
+                // E-mail 3 CZ: klasik + velký + dostupný
+                document.getElementById('email-velky-dostupny').textContent =
 `${uvodRadku}
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
 Bohužel se nám nepodařilo objednávku doručit kompletně z důvodu kapacity vybraného AlzaBoxu. 
@@ -1186,8 +1222,8 @@ Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i na
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
 
-            // E-mail 4: klasik + nedostupný + nezaplacený
-            document.getElementById('email-nedostupny-nezaplaceno').textContent =
+                // E-mail 4 CZ: klasik + nedostupný + nezaplacený
+                document.getElementById('email-nedostupny-nezaplaceno').textContent =
 `${uvodRadku}
 omlouváme se za komplikace spojené s doručením Vaší objednávky č. ${valZ1}. 
 Bohužel se nám nepodařilo objednávku doručit kompletně. 
@@ -1199,6 +1235,7 @@ Moje Alza > Reklamace
 Ještě jednou se za vzniklou situaci omlouváme a budeme rádi, pokud nám i nadále zachováte svou přízeň. 
 Pokud budete mít jakékoli další přání či dotazy, neváhejte nás kontaktovat. 
 Přejeme Vám hezký den.`;
+            }
         }
 
         function aktualizujViditelnost() {
@@ -1301,11 +1338,21 @@ Přejeme Vám hezký den.`;
             }
         });
 
-        ['pole-F', 'pole-Jmeno', 'pole-PF', 'pole-PA', 'pole-CCT', 'pole-R', 'pole-dbpc', 'pole-dbph', 'pole-z1', 'pole-Z2', 'pole-zh', 'pole-D', 'pole-referent'].forEach(id => {
+        ['pole-F', 'pole-Jmeno', 'pole-PF', 'pole-PA', 'pole-CCT', 'pole-R', 'pole-dbpc', 'pole-dbph', 'pole-z1', 'pole-Z2', 'pole-zh', 'pole-referent'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', aktualizujVse);
             }
+        });
+
+        document.querySelectorAll('.pole-D-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                stav.datumDodani = e.target.value;
+                document.querySelectorAll('.pole-D-input').forEach(other => {
+                    if (other !== e.target) other.value = stav.datumDodani;
+                });
+                aktualizujTexty();
+            });
         });
 
         function odhalitDalsiViditelnouSekci(startId) {
@@ -1409,6 +1456,7 @@ Přejeme Vám hezký den.`;
             stav.askuTyp = '';
             stav.nejde = false;
             stav.hu = false;
+            stav.datumDodani = '';
             stav.odhaleneSekce = new Set(['sekce-1']);
             stav.produkty = [{ kod: '', dostupnost: 'dostupne', nazev: '' }];
 
