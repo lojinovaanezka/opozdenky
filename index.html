@@ -115,6 +115,27 @@
             border-color: #28a745;
             color: #155724;
         }
+        .kontakt-radek {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        .kontakt-popis {
+            font-weight: 600;
+            min-width: 210px;
+        }
+        .wiki-link {
+            display: inline-block;
+            margin: 8px 0;
+            color: #0056b3;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .wiki-link:hover {
+            color: #003d80;
+        }
         .sekce {
             background: #ffffff;
             border: 1px solid #dcdde1;
@@ -532,9 +553,9 @@
             <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">F12</div>
             <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">uhradit</div>
             <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">ctrl + alt + P</div>
-            <div class="radek">-> Nová faktura</div>
-            <div class="radek">
-                Datum dodání: <input type="text" id="pole-D" placeholder="D">
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">-> Nová faktura</div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && zaplaceno">
+                Datum dodání: <span class="copy-box" data-propis="D" data-default="D">D</span>
             </div>
             <div class="radek">-> Stará faktura</div>
         </div>
@@ -546,7 +567,11 @@
                 <button type="button" class="btn-hotovo" data-odhalit="sekce-12">Hotovo</button>
             </div>
             <div class="radek">-> Dobropis</div>
-            <div class="radek">Blokace refundace</div>
+            <div class="radek"><strong>Dobropis</strong></div>
+            <div class="radek">
+                Blokace refundace / Blokovat dobropis:
+                <span class="copy-box" data-propis="dbpc" data-default="dbpc">dbpc</span>
+            </div>
             <div class="radek">-> Faktura</div>
         </div>
 
@@ -556,13 +581,38 @@
                 <h2>Faktura</h2>
                 <button type="button" class="btn-hotovo" data-odhalit="sekce-13">Hotovo</button>
             </div>
+            <div class="radek podminka" data-cond="klasik && nezaplaceno"><strong>Faktura</strong></div>
+
+            <!-- Jen pro terminál + uhradit (nad F12) -->
+            <div class="radek podminka" data-cond="terminalUhradit">
+                Zkopírovat referenta: <input type="text" id="pole-referent" placeholder="referent">
+            </div>
+            <div class="radek podminka" data-cond="terminalUhradit">Změnit platbu na příkazem</div>
+
             <div class="radek podminka" data-cond="klasik && nezaplaceno">F12</div>
+
+            <!-- Jen pro terminál + uhradit (přímo pod F12) -->
+            <div class="radek podminka" data-cond="terminalUhradit">Změnit platbu na terminálem</div>
+            <div class="radek podminka" data-cond="terminalUhradit">
+                Změnit referenta zpět na <span class="copy-box" data-propis="referent" data-default="referent">referent</span>
+            </div>
+
             <div class="radek">
                 Komentář: <span class="copy-box" data-copy="-CVVYD-">-CVVYD-</span>
             </div>
             <div class="radek">Vydat doklad</div>
             <div class="radek">Shift + F5</div>
             <div class="radek">Zkontrolovat změnu</div>
+
+            <!-- Závěr pro klasik + malý + dostupný + nezaplacený -->
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">
+                -> nová zakázka - <span class="copy-box" data-propis="Z2" data-default="Z2">Z2</span>
+            </div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">-> nová faktura</div>
+            <div class="radek podminka" data-cond="klasik && maly && dostupny && nezaplaceno">
+                Datum dodání: <span class="copy-box" data-propis="D" data-default="D">D</span>
+            </div>
+
             <div class="radek podminka" data-cond="klasik">-> CCT</div>
         </div>
 
@@ -625,6 +675,7 @@
                 <button type="button" class="btn-podzalozka" data-subtab="Poškozené zboží">Poškozené zboží</button>
                 <button type="button" class="btn-podzalozka" data-subtab="Poškozený obal nebo lehké poškození">Poškozený obal nebo lehké poškození</button>
                 <button type="button" class="btn-podzalozka" data-subtab="Prodloužení zásilky">Prodloužení zásilky</button>
+                <button type="button" class="btn-podzalozka" data-subtab="Kontakty">Kontakty</button>
             </div>
 
             <div id="chat-seznam-frazi"></div>
@@ -681,7 +732,7 @@
             },
             {
                 kategorie: 'Čestko',
-                text: 'Abych mohla řešení zahájit, prosím, vyplňte čestné prohlášení níže (stačí zkopírovat, vyplnit údaje na zvýrazněných místech a poslat zpět). \nJá, JMÉNO A PŘÍJMENÍ narozen/a DATUM NAROZENÍ s trvalým bydlištěm na adrese ADRESA tímto čestně prohlašuji, že objednávku č. ČÍSLO OBJEDNÁVKY, jsem k dnešnímu dni neobdržel/a a v případě, že bude doručována v následujících dnech, zavazuji se, že ji nepřevezmu a vzdávám se tak všech nároků na tuto objednávku. '
+                link: 'wiki/pojmy/cestne-prohlaseni-pres-chat'
             },
             {
                 kategorie: 'Čestko',
@@ -738,6 +789,36 @@
             {
                 kategorie: 'Prodloužení zásilky',
                 text: 'Pokud zásilku vyzvednout nestihnete, vrátí se nám na sklad a v ten moment Vás refundujeme. Převedení peněz následně může trvat zhruba 2-3 pracovní dny. Mohu Vám pomoci ještě s něčím jiným?'
+            },
+            {
+                kategorie: 'Kontakty',
+                popis: 'Číslo Česko:',
+                hodnota: '+420 225 340 111'
+            },
+            {
+                kategorie: 'Kontakty',
+                popis: 'Číslo Slovensko:',
+                hodnota: '+421 257 101 800'
+            },
+            {
+                kategorie: 'Kontakty',
+                popis: 'Stížnosti cz:',
+                hodnota: 'https://www.alza.cz/contact-and-support/stiznost'
+            },
+            {
+                kategorie: 'Kontakty',
+                popis: 'Stížnosti sk:',
+                hodnota: 'https://www.alza.sk/contact-and-support/staznost'
+            },
+            {
+                kategorie: 'Kontakty',
+                popis: 'Návrh na zlepšení cz:',
+                hodnota: 'https://www.alza.cz/contact-and-support/nahlaseni-chyby-navrh-na-zlepseni'
+            },
+            {
+                kategorie: 'Kontakty',
+                popis: 'Návrh na zlepšení sk:',
+                hodnota: 'https://www.alza.sk/contact-and-support/navrh-na-zlepsenie'
             }
         ];
 
@@ -752,17 +833,51 @@
 
             const filtrovane = chatFraze.filter(item => {
                 if (dotaz !== '') {
-                    return item.text.toLowerCase().includes(dotaz);
+                    const vTextu = item.text ? item.text.toLowerCase().includes(dotaz) : false;
+                    const vLinku = item.link ? item.link.toLowerCase().includes(dotaz) : false;
+                    const vPopisu = item.popis ? item.popis.toLowerCase().includes(dotaz) : false;
+                    const vHodnote = item.hodnota ? item.hodnota.toLowerCase().includes(dotaz) : false;
+                    return vTextu || vLinku || vPopisu || vHodnote;
                 }
                 return item.kategorie === aktivniPodzalozka;
             });
 
             if (filtrovane.length === 0) {
-                chatSeznamFrazi.innerHTML = '<div class="radek" style="color:#6c757d;">Žádná fráze neodpovídá hledanému textu.</div>';
+                chatSeznamFrazi.innerHTML = '<div class="radek" style="color:#6c757d;">Žádná položka neodpovídá hledanému textu.</div>';
                 return;
             }
 
             filtrovane.forEach(item => {
+                if (item.link) {
+                    const a = document.createElement('a');
+                    a.href = item.link;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.className = 'wiki-link';
+                    a.textContent = item.link;
+                    chatSeznamFrazi.appendChild(a);
+                    return;
+                }
+
+                if (item.popis && item.hodnota) {
+                    const r = document.createElement('div');
+                    r.className = 'kontakt-radek';
+
+                    const popisSpan = document.createElement('span');
+                    popisSpan.className = 'kontakt-popis';
+                    popisSpan.textContent = item.popis;
+
+                    const box = document.createElement('span');
+                    box.className = 'copy-box';
+                    box.textContent = item.hodnota;
+                    box.addEventListener('click', () => zkopirujDoSchranky(item.hodnota, box));
+
+                    r.appendChild(popisSpan);
+                    r.appendChild(box);
+                    chatSeznamFrazi.appendChild(r);
+                    return;
+                }
+
                 const box = document.createElement('button');
                 box.type = 'button';
                 box.className = 'fraze-box';
@@ -844,6 +959,8 @@
             const nezaplaceno = (prikaz && stav.prikazStav === 'nezaplaceno')
                 || (terminal && stav.terminalStav === 'uhradit' && klasik);
 
+            const terminalUhradit = terminal && stav.terminalStav === 'uhradit';
+
             const velky = (stav.duvod === 'nevesel' && stav.velikost === 'velky');
             const maly = !velky;
 
@@ -863,6 +980,7 @@
                 prikaz,
                 zaplaceno,
                 nezaplaceno,
+                terminalUhradit,
                 velky,
                 maly,
                 nevesel: stav.duvod === 'nevesel',
@@ -895,6 +1013,7 @@
                 case 'kompenzace': return p.kompenzace;
                 case 'klasik && velky && dostupny && zaplaceno': return p.klasik && p.velky && p.dostupny && p.zaplaceno;
                 case 'klasik && nezaplaceno': return p.klasik && p.nezaplaceno;
+                case 'terminalUhradit': return p.terminalUhradit;
                 case 'klasik && (malydostupny || nedostupny || velkydostupny)':
                     return p.klasik && (p.malydostupny || p.nedostupny || p.velkydostupny);
                 case 'klasik && nedostupny && zaplaceno': return p.klasik && p.nedostupny && p.zaplaceno;
@@ -998,6 +1117,7 @@
             const valZ2 = ziskejText('pole-Z2', 'Z2');
             const valD = ziskejText('pole-D', 'D');
             const valJmeno = ziskejText('pole-Jmeno', 'Jméno');
+            const valReferent = ziskejText('pole-referent', 'referent');
 
             const jeFirma = stav.osloveni === 'firma';
             const osloveniText = stav.osloveni === 'pan' ? 'pane' : (stav.osloveni === 'paní' ? 'paní' : 'oslovení');
@@ -1015,6 +1135,10 @@
                 const klic = box.getAttribute('data-propis');
                 if (klic === 'F') box.textContent = valF;
                 if (klic === 'CCT') box.textContent = valCCT;
+                if (klic === 'dbpc') box.textContent = valDbpc;
+                if (klic === 'Z2') box.textContent = valZ2;
+                if (klic === 'D') box.textContent = valD;
+                if (klic === 'referent') box.textContent = valReferent;
                 if (klic === 'rozdilKomp') box.textContent = rozdilZaokrouhleno;
             });
 
@@ -1177,7 +1301,7 @@ Přejeme Vám hezký den.`;
             }
         });
 
-        ['pole-F', 'pole-Jmeno', 'pole-PF', 'pole-PA', 'pole-CCT', 'pole-R', 'pole-dbpc', 'pole-dbph', 'pole-z1', 'pole-Z2', 'pole-zh', 'pole-D'].forEach(id => {
+        ['pole-F', 'pole-Jmeno', 'pole-PF', 'pole-PA', 'pole-CCT', 'pole-R', 'pole-dbpc', 'pole-dbph', 'pole-z1', 'pole-Z2', 'pole-zh', 'pole-D', 'pole-referent'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', aktualizujVse);
